@@ -14,6 +14,7 @@ def create_executable(file):
         cmd = 'g++ -o {root}/{name} {root}/{file}'.format(root=settings.MEDIA_ROOT, name=name, file=file)
     elif ext == '.java':
         cmd = 'javac {root}/{file}'.format(root=settings.MEDIA_ROOT, file=file)
+        print(cmd)
 
     process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
