@@ -1,18 +1,9 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	</head>
-	<body>
-		<form method="POST" enctype="multipart/form-data"> {% csrf_token %}
-			<input type="file" name="code">
-			<button type="Submit">Upload solution</button>
-		</form>
 
-		{% if uploaded_file_url %}
-			<p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
-		{% endif %}
-	</body>
-</html>
+{% block content %}
+
+<h1 class="text-center">Online Judge</h1>
+<a href="{% url 'grader:question_list' %}">Submit a solution!</a>
+
+{% endblock %}

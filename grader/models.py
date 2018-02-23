@@ -1,0 +1,38 @@
+from django.db import models
+from django.urls import reverse
+
+
+class QuestionManager(models.Manager):
+
+    def get_by_code(self, code):
+        qs = self.get_queryset().filter(code=code)
+        if qs.count() == 1:
+            return qs.first()
+        return None
+
+
+class Question(models.Model):
+    code = models.CharField(unique=True, max_length=10)
+    title = models.CharField(unique=True, max_length=120)
+    description = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    objects = QuestionManager()
+
+    def __str__(self):
+        return self.code
+
+    def get_absolute_url(self):
+        return reverse('grader:question_detail', kwargs={'code': self.code})
+
+
+def upload_product_file_location(instance, filename):
+    location = 'submissions/{email}/code/'.format(email=instance.email)
+    return location + filename
+
+
+class UserSubmit(models.Model):
+    question = models.ForeignKey(Question)
+    submit_file = models.FileField(upload_to=upload_product_file_location)
+    email = models.EmailField(max_length=120)
+    uploaded_at = models.DateTimeField(auto_now_add=True)

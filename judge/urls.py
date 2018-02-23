@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
 
@@ -9,6 +9,7 @@ from .views import home, compile_code
 urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^compile/$', compile_code, name='compile'),
+    url(r'^question/', include('grader.urls', namespace='grader')),
     url(r'^admin/', admin.site.urls),
 ]
 
