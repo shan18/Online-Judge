@@ -40,3 +40,6 @@ class SolutionSubmit(models.Model):
     solution = models.FileField(upload_to=upload_solution_file_location)
     email = models.EmailField(max_length=120)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.question.code
