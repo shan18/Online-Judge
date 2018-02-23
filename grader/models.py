@@ -29,14 +29,14 @@ class Question(models.Model):
         return reverse('grader:question_submit', kwargs={'code': self.code})
 
 
-def upload_product_file_location(instance, filename):
+def upload_solution_file_location(instance, filename):
     location = 'submissions/{email}/code/'.format(email=instance.email)
     print(filename)
     return location + filename
 
 
-class UserSubmit(models.Model):
+class SolutionSubmit(models.Model):
     question = models.ForeignKey(Question)
-    submit_file = models.FileField(upload_to=upload_product_file_location)
+    solution = models.FileField(upload_to=upload_solution_file_location)
     email = models.EmailField(max_length=120)
     uploaded_at = models.DateTimeField(auto_now_add=True)

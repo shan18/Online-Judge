@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.http import Http404
 
-from .forms import UserSubmitForm
+from .forms import SolutionSubmitForm
 from .models import Question
 
 
@@ -25,7 +25,7 @@ class QuestionDetailView(DetailView):
 
 def submit_solution(request, code):
     if request.method == 'POST':
-        form = UserSubmitForm(request.POST, request.FILES)
+        form = SolutionSubmitForm(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.question = Question.objects.get_by_code(code)
@@ -33,5 +33,5 @@ def submit_solution(request, code):
             form.save()
             return redirect('home')
     else:
-        form = UserSubmitForm()
+        form = SolutionSubmitForm()
     return render(request, 'grader/user_submission.html', {'form': form})
