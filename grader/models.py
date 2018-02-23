@@ -25,9 +25,13 @@ class Question(models.Model):
     def get_absolute_url(self):
         return reverse('grader:question_detail', kwargs={'code': self.code})
 
+    def get_submit_url(self):
+        return reverse('grader:question_submit', kwargs={'code': self.code})
+
 
 def upload_product_file_location(instance, filename):
     location = 'submissions/{email}/code/'.format(email=instance.email)
+    print(filename)
     return location + filename
 
 

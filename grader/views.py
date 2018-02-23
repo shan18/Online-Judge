@@ -23,11 +23,13 @@ class QuestionDetailView(DetailView):
         return instance
 
 
-
-def user_submission(request):
+def submit_solution(request, code):
     if request.method == 'POST':
         form = UserSubmitForm(request.POST, request.FILES)
         if form.is_valid():
+            instance = form.save(commit=False)
+            instance.question = Question.objects.get_by_code(code)
+            instance.save()
             form.save()
             return redirect('home')
     else:
