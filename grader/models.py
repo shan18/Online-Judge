@@ -1,5 +1,16 @@
+import os
+
 from django.db import models
 from django.urls import reverse
+
+
+RESULT_TYPES = (
+    ('ac', 'AC'),           # Correct Answer
+    ('wa', 'WA'),           # Wrong Answer
+    ('tle', 'TLE'),         # Time Limit Exceeded
+    ('cte', 'CTE'),         # Compile Time Error
+    ('sigabrt', 'SIGABRT')  # Runtime Error
+)
 
 
 class QuestionManager(models.Manager):
@@ -30,14 +41,15 @@ class Question(models.Model):
 
 
 def upload_solution_file_location(instance, filename):
-    location = 'submissions/{email}/code/'.format(email=instance.email)
-    print(filename)
-    return location + filename
+    location = 'submissions/{email}/'.format(email=instance.email)
+    file, ext = os.path.splitext(filename)
+    return location + instance.question.code + ext
 
 
 class SolutionSubmit(models.Model):
     question = models.ForeignKey(Question)
     solution = models.FileField(upload_to=upload_solution_file_location)
+    result = models.CharField(max_length=10, choices=RESULT_TYPES, null=True, blank=True)
     email = models.EmailField(max_length=120)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
