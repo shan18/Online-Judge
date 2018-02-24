@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 
-from .forms import SolutionSubmitForm
+from .forms import SolutionForm
 from .utils import create_executable, compare
 from questions.models import Question
 
 
 def submit_solution(request, code):
     if request.method == 'POST':
-        form = SolutionSubmitForm(request.POST, request.FILES)
+        form = SolutionForm(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.question = Question.objects.get_by_code(code)
@@ -15,7 +15,7 @@ def submit_solution(request, code):
             form.save()
             return redirect('home')
     else:
-        form = SolutionSubmitForm()
+        form = SolutionForm()
     return render(request, 'grader/user_submission.html', {'form': form})
 
 

@@ -20,13 +20,13 @@ def upload_solution_file_location(instance, filename):
     return location + instance.question.code + ext
 
 
-class SolutionSubmitManager(models.Manager):
+class SolutionManager(models.Manager):
 
     def get_by_code(self, code):
         qs = self.get_queryset().filter(question__code=code)
 
 
-class SolutionSubmit(models.Model):
+class Solution(models.Model):
     question = models.ForeignKey(Question)
     solution = models.FileField(upload_to=upload_solution_file_location)
     result = models.CharField(max_length=10, choices=RESULT_TYPES, null=True, blank=True)

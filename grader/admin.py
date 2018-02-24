@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import SolutionSubmit
+from .models import Solution
 
 
-admin.site.register(SolutionSubmit)
+admin.site.register(Solution)

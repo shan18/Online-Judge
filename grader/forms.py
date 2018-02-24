@@ -1,10 +1,10 @@
 from django import forms
 
-from .models import SolutionSubmit
+from .models import Solution
 
 
-class SolutionSubmitForm(forms.ModelForm):
+class SolutionForm(forms.ModelForm):
 
     class Meta:
-        model = SolutionSubmit
+        model = Solution
         fields = ('email', 'solution')
