@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponse, Http404
 
 from .forms import SolutionForm
-from .utils import run_submission
+from .autograder import run_submission
 from .models import Solution
 from questions.models import Question
 
