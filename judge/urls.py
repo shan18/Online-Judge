@@ -9,7 +9,7 @@ from .views import home
 urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^questions/', include('questions.urls', namespace='question')),
-    url(r'^question/grade/', include('grader.urls', namespace='grader')),
+    url(r'^question/', include('grader.urls', namespace='grader')),
     url(r'^admin/', admin.site.urls),
 ]
 

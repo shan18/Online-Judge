@@ -129,5 +129,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static_cdn', 'media_root')
 
 
-SUBMISSION_ROOT = os.path.join(MEDIA_ROOT, 'submissions')
 TEST_CASES_ROOT = os.path.join(MEDIA_ROOT, 'test_cases')

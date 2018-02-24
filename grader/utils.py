@@ -5,40 +5,27 @@ import filecmp
 from django.conf import settings
 
 
-def create_executable(file):
-    name, ext = os.path.splitext(file)
-
+def get_compile_command(filename, ext):
     if ext == '.c':
-        cmd = 'gcc -o {root}/{name} {root}/{file}'.format(root=settings.SUBMISSION_ROOT, name=name, file=file)
+        cmd = 'gcc -o {name} {name}.c'.format(name=filename)
     elif ext == '.cpp':
-        cmd = 'g++ -o {root}/{name} {root}/{file}'.format(root=settings.SUBMISSION_ROOT, name=name, file=file)
+        cmd = 'g++ -o {name} {name}.cpp'.format(name=filename)
     elif ext == '.java':
-        cmd = 'javac {root}/{file}'.format(root=settings.SUBMISSION_ROOT, file=file)
-
-    process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
-    output, error = process.communicate()
-
-    execute(name, ext)
+        cmd = 'javac {name}.java'.format(name=filename)
+    return cmd
 
 
-def execute(file, ext):
-    os.chdir(settings.MEDIA_ROOT)
+def get_execute_command(filename, ext, input_test_case):
     if ext in ['.c', '.cpp']:
-        cmd = './{executable} < input.txt > output.txt'.format(executable=file)
+        cmd = './{name} < {input_file} > {name}.txt'.format(name=filename, input_file=input_test_case)
     elif ext == '.java':
-        cmd = 'java {executable} < input.txt > output.txt'.format(executable=file)
-        file += '.class'
-
-    subprocess.check_output(cmd, shell=True)
-    os.remove(os.path.join(settings.MEDIA_ROOT, file))
+        cmd = 'java {name} < {input_file} > {name}.txt'.format(name=filename, input_file=input_test_case)
+    return cmd
 
 
-def compare(file):
-    os.chdir(settings.MEDIA_ROOT)
-    answer_file = file + '.txt'
-    solution_file = file + '_expected' + '.txt'
+def verify_solution(output, expected_output):
 
-    with open(answer_file) as answer, open(solution_file) as solution:
+    with open(output) as answer, open(expected_output) as solution:
         answer_lines = answer.read()
         solution_lines = solution.read()
         if answer_lines == solution_lines:
@@ -49,3 +36,39 @@ def compare(file):
             return False
 
     # return filecmp.cmp(answer_file, solution_file)
+
+
+def run_submission(file, question_code):
+    path_contents = file.split('/')
+    user_submission_root = '/'.join(path_contents[:-1])
+    submit_file, ext = os.path.splitext(path_contents[-1])
+    root = os.path.join(settings.MEDIA_ROOT, user_submission_root)
+    os.chdir(root)
+
+    cmd_compile = get_compile_command(submit_file, ext)
+    process = subprocess.Popen(cmd_compile.split(), stdout=subprocess.PIPE)
+    output, error = process.communicate()
+
+    tc_input_dir = os.path.join(settings.TEST_CASES_ROOT, question_code, 'inputs')
+    tc_input_dir_contents = sorted(os.listdir(tc_input_dir))
+    tc_output_dir = os.path.join(settings.TEST_CASES_ROOT, question_code, 'outputs')
+    tc_output_dir_contents = sorted(os.listdir(tc_output_dir))
+
+    output_file = submit_file + '.txt'
+
+    for t_in, t_out in zip(tc_input_dir_contents, tc_output_dir_contents):
+        # execute submission
+        cmd_execute = get_execute_command(submit_file, ext, os.path.join(tc_input_dir, t_in))
+        k = subprocess.check_output(cmd_execute, shell=True)
+
+        # compare with expected output
+        if not verify_solution(output_file, os.path.join(tc_output_dir, t_out)):
+            if ext == '.java':
+                submit_file += '.class'
+            os.remove(submit_file)
+            return False
+
+    if ext == '.java':
+        submit_file += '.class'
+    os.remove(submit_file)
+    return True
