@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import SolutionSubmit, Question
+from .models import SolutionSubmit
 
 
 admin.site.register(SolutionSubmit)
-admin.site.register(Question)

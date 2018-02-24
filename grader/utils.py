@@ -9,11 +9,11 @@ def create_executable(file):
     name, ext = os.path.splitext(file)
 
     if ext == '.c':
-        cmd = 'gcc -o {root}/{name} {root}/{file}'.format(root=settings.MEDIA_ROOT, name=name, file=file)
+        cmd = 'gcc -o {root}/{name} {root}/{file}'.format(root=settings.SUBMISSION_ROOT, name=name, file=file)
     elif ext == '.cpp':
-        cmd = 'g++ -o {root}/{name} {root}/{file}'.format(root=settings.MEDIA_ROOT, name=name, file=file)
+        cmd = 'g++ -o {root}/{name} {root}/{file}'.format(root=settings.SUBMISSION_ROOT, name=name, file=file)
     elif ext == '.java':
-        cmd = 'javac {root}/{file}'.format(root=settings.MEDIA_ROOT, file=file)
+        cmd = 'javac {root}/{file}'.format(root=settings.SUBMISSION_ROOT, file=file)
 
     process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()

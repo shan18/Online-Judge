@@ -1,26 +1,8 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
-from django.http import Http404
 
 from .forms import SolutionSubmitForm
-from .models import Question
-
-
-class QuestionListView(ListView):
-    queryset = Question.objects.all()
-    template_name = 'grader/question_list.html'
-
-
-class QuestionDetailView(DetailView):
-    template_name = 'grader/question_detail.html'
-
-    def get_object(self, *args, **kwargs):
-        request = self.request
-        code = self.kwargs.get('code')
-        instance = Question.objects.get_by_code(code)
-        if instance is None:
-            raise Http404('Question not found')
-        return instance
+from .utils import create_executable, compare
+from questions.models import Question
 
 
 def submit_solution(request, code):
@@ -35,3 +17,14 @@ def submit_solution(request, code):
     else:
         form = SolutionSubmitForm()
     return render(request, 'grader/user_submission.html', {'form': form})
+
+
+def check_solution(request, code):
+    file = 'add.c'
+    output = 'output'
+    create_executable(file)
+    result = compare(output)
+    if result:
+        return HttpResponse('Compiled successfully.')
+    else:
+        return HttpResponse('WA')
