@@ -45,9 +45,11 @@ def run_submission(file, question_code):
     root = os.path.join(settings.MEDIA_ROOT, user_submission_root)
     os.chdir(root)
 
-    cmd_compile = get_compile_command(submit_file, ext)
-    process = subprocess.Popen(cmd_compile.split(), stdout=subprocess.PIPE)
-    output, error = process.communicate()
+    try:
+        cmd_compile = get_compile_command(submit_file, ext)
+        process = subprocess.check_output(cmd_compile, shell=True)
+    except subprocess.CalledProcessError:
+        return 'cte'  # Compile Time Error
 
     tc_input_dir = os.path.join(settings.TEST_CASES_ROOT, question_code, 'inputs')
     tc_input_dir_contents = sorted(os.listdir(tc_input_dir))
@@ -58,17 +60,21 @@ def run_submission(file, question_code):
 
     for t_in, t_out in zip(tc_input_dir_contents, tc_output_dir_contents):
         # execute submission
-        cmd_execute = get_execute_command(submit_file, ext, os.path.join(tc_input_dir, t_in))
-        k = subprocess.check_output(cmd_execute, shell=True)
+        try:
+            cmd_execute = get_execute_command(submit_file, ext, os.path.join(tc_input_dir, t_in))
+            process = subprocess.check_output(cmd_execute, shell=True)
+        except subprocess.CalledProcessError:
+            os.remove(submit_file)
+            return 'sigabrt'  # Runtime Error
 
         # compare with expected output
         if not verify_solution(output_file, os.path.join(tc_output_dir, t_out)):
             if ext == '.java':
                 submit_file += '.class'
             os.remove(submit_file)
-            return False
+            return 'wa'  # Wrong Answer
 
     if ext == '.java':
         submit_file += '.class'
     os.remove(submit_file)
-    return True
+    return 'ac'  # Correct Answer

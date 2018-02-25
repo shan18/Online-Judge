@@ -16,7 +16,6 @@ def submit_solution(request, code):
             instance.question = Question.objects.get_by_code(code)
             instance.save()
             form.save()
-            print(reverse('grader:grade', kwargs={'code': code, 'pk': instance.pk}))
             return redirect(reverse('grader:grade', kwargs={'code': code, 'pk': instance.pk}))
     else:
         form = SolutionForm()
@@ -28,12 +27,7 @@ def check_solution(request, code, pk):
     if qs.count() == 1:
         obj = qs.first()
         result = run_submission(obj.solution.name, obj.question.code)
-        if result:
-            obj.result = 'ac'
-            obj.save()
-            return HttpResponse('Compiled successfully.')
-        else:
-            obj.result = 'wa'
-            obj.save()
-            return HttpResponse('WA')
+        obj.result = result
+        obj.save()
+        return HttpResponse(result)
     raise Http404
