@@ -26,14 +26,12 @@ def get_execute_command(filename, ext, input_test_case):
 def verify_solution(output, expected_output):
 
     with open(output) as answer, open(expected_output) as solution:
-        answer_lines = answer.read()
-        solution_lines = solution.read()
-        if answer_lines == solution_lines:
-            return True
-        elif answer_lines[:-1] == solution_lines and answer_lines[-1] == '\n':
-            return True
-        else:
-            return False
+        answer_lines = answer.readlines()
+        solution_lines = solution.readlines()
+        for i, j in zip(answer_lines, solution_lines):
+            if i.strip() != j.strip():
+                return False
+        return True
 
     # return filecmp.cmp(answer_file, solution_file)
 
