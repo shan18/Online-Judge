@@ -1,6 +1,7 @@
 import os
 import subprocess
 import filecmp
+import time
 
 from django.conf import settings
 
@@ -60,10 +61,14 @@ def run_submission(file, question_code):
         # execute submission
         try:
             cmd_execute = get_execute_command(submit_file, ext, os.path.join(tc_input_dir, t_in))
-            process = subprocess.check_output(cmd_execute, shell=True)
+            s = time.time()
+            process = subprocess.check_output(cmd_execute, shell=True, timeout=1)
         except subprocess.CalledProcessError:
             os.remove(submit_file)
             return 'sigabrt'  # Runtime Error
+        except subprocess.TimeoutExpired:
+            os.remove(submit_file)
+            return 'tle'  # Time Limit Exceeded
 
         # compare with expected output
         if not verify_solution(output_file, os.path.join(tc_output_dir, t_out)):
