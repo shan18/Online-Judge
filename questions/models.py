@@ -41,3 +41,17 @@ class TestCase(models.Model):
 
     def __str__(self):
         return self.question.code + ' - ' + self.file.name.split('/')[-1]
+
+
+def upload_expected_output_file_location(instance, filename):
+    location = 'test_cases/{code}/outputs/'.format(code=instance.question.code)
+    return location + filename
+
+
+class ExpectedOutput(models.Model):
+    question = models.ForeignKey(Question)
+    file = models.FileField(upload_to=upload_expected_output_file_location)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.question.code + ' - ' + self.file.name.split('/')[-1]

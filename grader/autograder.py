@@ -60,7 +60,6 @@ def run_submission(file, question_code):
         # execute submission
         try:
             cmd_execute = get_execute_command(submit_file, ext, os.path.join(tc_input_dir, t_in))
-            s = time.time()
             process = subprocess.check_output(cmd_execute, shell=True, timeout=1)
         except subprocess.CalledProcessError:
             os.remove(submit_file)
