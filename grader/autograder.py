@@ -1,7 +1,6 @@
 import os
 import subprocess
 import filecmp
-import time
 
 from django.conf import settings
 

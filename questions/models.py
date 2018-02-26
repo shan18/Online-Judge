@@ -27,3 +27,17 @@ class Question(models.Model):
 
     def get_submit_url(self):
         return reverse('grader:submit', kwargs={'code': self.code})
+
+
+def upload_test_case_file_location(instance, filename):
+    location = 'test_cases/{code}/inputs/'.format(code=instance.question.code)
+    return location + filename
+
+
+class TestCase(models.Model):
+    question = models.ForeignKey(Question)
+    file = models.FileField(upload_to=upload_test_case_file_location)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.question.code + ' - ' + self.file.name.split('/')[-1]
