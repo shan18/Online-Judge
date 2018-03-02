@@ -81,6 +81,11 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_label):
         """ Does the user have permissions to view the app 'app_label'? """
         return True
+
+    def increment_score(self, value):
+        self.score += int(value)
+        self.save()
+        return self.score
     
     @property
     def get_score(self):

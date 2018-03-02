@@ -57,4 +57,4 @@ class Solution(models.Model):
     objects = SolutionManager()
 
     def __str__(self):
-        return self.user.username + self.question.code
+        return self.user.username + ' - ' + self.question.code

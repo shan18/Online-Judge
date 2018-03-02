@@ -27,8 +27,12 @@ def check_solution(request, code, pk):
     qs = Solution.objects.get_latest_submission(code, pk)
     if qs.count() == 1:
         obj = qs.first()
+        if obj.result == 'ac':
+            return HttpResponse('already')
         result = run_submission(obj.solution.name, obj.question.code)
         obj.result = result
+        if result == 'ac':
+            print(obj.user.increment_score(100))
         obj.save()
         return HttpResponse(result)
     raise Http404

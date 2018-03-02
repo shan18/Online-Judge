@@ -22,7 +22,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
         # would have data we had fields like 'full_name'
-        ('Personal info', {'fields': ('full_name',)}),
+        ('Personal info', {'fields': ('full_name', 'score')}),
         ('Permissions', {'fields': ('admin', 'staff', 'is_active')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -30,11 +30,11 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'full_name', 'password1', 'password2')}
+            'fields': ('username', 'email', 'full_name', 'score', 'password1', 'password2')}
          ),
     )
     search_fields = ('username', 'email', 'full_name')
-    ordering = ('username', 'email',)
+    ordering = ('username', 'email')
     filter_horizontal = ()
 
 
