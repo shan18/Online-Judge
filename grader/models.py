@@ -1,9 +1,12 @@
 import os
 
 from django.db import models
+from django.contrib.auth import get_user_model
 
 from questions.models import Question
 
+
+User = get_user_model()
 
 RESULT_TYPES = (
     ('ac', 'AC'),           # Correct Answer
@@ -15,7 +18,7 @@ RESULT_TYPES = (
 
 
 def upload_solution_file_location(instance, filename):
-    location = 'submissions/{email}/'.format(email=instance.email)
+    location = 'submissions/{username}/'.format(username=instance.user.username)
     file, ext = os.path.splitext(filename)
     return location + instance.question.code + ext
 
@@ -24,9 +27,6 @@ class SolutionQuerySet(models.query.QuerySet):
 
     def get_by_code(self, code):
         return self.filter(question__code=code)
-
-    def get_by_email(self, email):
-        return self.filter(email=email)
 
     def get_by_id(self, pk):
         return self.filter(pk=pk)
@@ -40,9 +40,6 @@ class SolutionManager(models.Manager):
     def get_by_code(self, code):
         return self.get_queryset().get_by_code(code)
 
-    def get_by_email(self, email):
-        return self.get_queryset().get_by_email(email)
-
     def get_by_id(self, pk):
         return self.get_queryset().get_by_id(pk)
 
@@ -52,12 +49,12 @@ class SolutionManager(models.Manager):
 
 class Solution(models.Model):
     question = models.ForeignKey(Question)
+    user = models.ForeignKey(User)
     solution = models.FileField(upload_to=upload_solution_file_location)
     result = models.CharField(max_length=10, choices=RESULT_TYPES, null=True, blank=True)
-    email = models.EmailField(max_length=120)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     objects = SolutionManager()
 
     def __str__(self):
-        return self.question.code
+        return self.user.username + self.question.code

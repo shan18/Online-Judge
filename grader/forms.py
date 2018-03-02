@@ -7,4 +7,4 @@ class SolutionForm(forms.ModelForm):
 
     class Meta:
         model = Solution
-        fields = ('email', 'solution')
+        fields = ('solution',)

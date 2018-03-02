@@ -14,6 +14,7 @@ def submit_solution(request, code):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.question = Question.objects.get_by_code(code)
+            instance.user = request.user
             instance.save()
             form.save()
             return redirect(reverse('grader:grade', kwargs={'code': code, 'pk': instance.pk}))
