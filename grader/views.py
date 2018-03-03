@@ -31,8 +31,14 @@ def check_solution(request, code, pk):
             return HttpResponse('already')
         result = run_submission(obj.solution.name, obj.question.code)
         obj.result = result
-        if result == 'ac':
-            print(obj.user.increment_score(100))
+        if obj.result == 'ac':
+            obj.score = 100
         obj.save()
+        qs = Solution.objects.get_by_code(code).filter(user=request.user).exclude(pk=obj.id).order_by('-score').first()
+        if qs is not None:
+            if obj.score > qs.score and  result == 'ac':
+                print(obj.user.increment_score(100))
+        else:
+            print(obj.user.increment_score(100))
         return HttpResponse(result)
     raise Http404

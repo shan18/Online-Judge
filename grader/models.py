@@ -52,6 +52,7 @@ class Solution(models.Model):
     user = models.ForeignKey(User)
     solution = models.FileField(upload_to=upload_solution_file_location)
     result = models.CharField(max_length=10, choices=RESULT_TYPES, null=True, blank=True)
+    score = models.IntegerField(default=0)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     objects = SolutionManager()
