@@ -32,7 +32,8 @@ def check_solution(request, code, pk):
         obj = qs.first()
         if obj.result == 'ac':
             return HttpResponse('already')
-        result = run_submission(obj.solution.name, obj.question.code)
+        # result = run_submission(obj.file.name, obj.question.code)
+        result = obj.evaluate()
         obj.result = result
         if obj.result == 'ac':
             obj.score = 100
@@ -41,7 +42,7 @@ def check_solution(request, code, pk):
         if qs is not None:
             if obj.score > qs.score and  result == 'ac':
                 print(obj.user.increment_score(100))
-        else:
+        elif result == 'ac':
             print(obj.user.increment_score(100))
         return HttpResponse(result)
     raise Http404
