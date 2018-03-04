@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponse, Http404
+from django.contrib.auth.decorators import login_required
 
 from .forms import SolutionForm
 from .autograder import run_submission
@@ -8,6 +9,7 @@ from .models import Solution
 from questions.models import Question
 
 
+@login_required
 def submit_solution(request, code):
     if request.method == 'POST':
         form = SolutionForm(request.POST, request.FILES)
@@ -23,6 +25,7 @@ def submit_solution(request, code):
     return render(request, 'grader/user_submission.html', {'form': form})
 
 
+@login_required
 def check_solution(request, code, pk):
     qs = Solution.objects.get_latest_submission(code, pk)
     if qs.count() == 1:

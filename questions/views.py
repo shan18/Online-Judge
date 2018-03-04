@@ -1,15 +1,16 @@
 from django.views.generic import ListView, DetailView
 from django.http import Http404
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Question
 
 
-class QuestionListView(ListView):
+class QuestionListView(LoginRequiredMixin, ListView):
     queryset = Question.objects.all()
     template_name = 'questions/list.html'
 
 
-class QuestionDetailView(DetailView):
+class QuestionDetailView(LoginRequiredMixin, DetailView):
     template_name = 'questions/detail.html'
 
     def get_object(self, *args, **kwargs):
