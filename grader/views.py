@@ -4,7 +4,6 @@ from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 
 from .forms import SolutionForm
-from .autograder import run_submission
 from .models import Solution
 from questions.models import Question
 
@@ -27,22 +26,23 @@ def submit_solution(request, code):
 
 @login_required
 def check_solution(request, code, pk):
-    qs = Solution.objects.get_latest_submission(code, pk)
-    if qs.count() == 1:
-        obj = qs.first()
-        if obj.result == 'ac':
-            return HttpResponse('already')
-        # result = run_submission(obj.file.name, obj.question.code)
-        result = obj.evaluate()
-        obj.result = result
-        if obj.result == 'ac':
-            obj.score = 100
-        obj.save()
-        qs = Solution.objects.get_by_code(code).filter(user=request.user).exclude(pk=obj.id).order_by('-score').first()
-        if qs is not None:
-            if obj.score > qs.score and  result == 'ac':
-                print(obj.user.increment_score(100))
-        elif result == 'ac':
-            print(obj.user.increment_score(100))
-        return HttpResponse(result)
-    raise Http404
+    qs = Solution.objects.get_by_user_question(request.user.username, code)
+    submission = qs.filter(pk=pk).first()
+
+    if submission.result is not None:
+        return HttpResponse(submission.result)
+    result = submission.evaluate()
+    submission.result = result
+
+    if submission.result == 'ac':
+        submission.score = 100
+        previous_max_submission = qs.exclude(pk=submission.id).first()
+        if previous_max_submission is not None:
+            score_diff = submission.score - previous_max_submission.score
+            if score_diff > 0:
+                submission.user.increment_score(score_diff)
+        else:
+            submission.user.increment_score(100)
+    submission.save()
+
+    return HttpResponse(submission.result)

@@ -28,11 +28,14 @@ def upload_solution_file_location(instance, filename):
 
 class SolutionQuerySet(models.query.QuerySet):
 
-    def get_by_code(self, code):
-        return self.filter(question__code=code)
+    def get_by_question(self, question_code):
+        return self.filter(question__code=question_code)
 
-    def get_by_id(self, pk):
-        return self.filter(pk=pk)
+    def get_by_user(self, username):
+        return self.filter(user__username=username)
+
+    def get_by_user_question(self, username, question_code):
+        return self.get_by_user(username).get_by_question(question_code)
 
 
 class SolutionManager(models.Manager):
@@ -40,14 +43,14 @@ class SolutionManager(models.Manager):
     def get_queryset(self):
         return SolutionQuerySet(self.model, using=self._db)
 
-    def get_by_code(self, code):
-        return self.get_queryset().get_by_code(code)
+    def get_by_user(self, username):
+        return self.get_queryset().get_by_user(username=username)
 
-    def get_by_id(self, pk):
-        return self.get_queryset().get_by_id(pk)
+    def get_by_question(self, question_code):
+        return self.get_queryset().get_by_question(question_code)
 
-    def get_latest_submission(self, code, pk):
-        return self.get_by_code(code).get_by_id(pk)
+    def get_by_user_question(self, username, question_code):
+        return self.get_queryset().get_by_user_question(username, question_code)
 
 
 class Solution(models.Model):
@@ -57,9 +60,12 @@ class Solution(models.Model):
     language = models.CharField(max_length=10)
     result = models.CharField(max_length=10, choices=RESULT_TYPES, null=True, blank=True)
     score = models.IntegerField(default=0)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = SolutionManager()
+
+    class Meta:
+        ordering = ['-score', 'timestamp']
 
     def __str__(self):
         return self.user.username + ' - ' + self.question.code
