@@ -63,6 +63,9 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
+    class Meta:
+        ordering = ['-score', '-timestamp']
+
     def __str__(self):
         return self.username
 
