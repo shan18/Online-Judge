@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.contrib.auth import get_user_model
 
-from questions.models import Question
+from questions.models import Question, TestCase, ExpectedOutput
 
 
 User = get_user_model()
@@ -131,19 +131,17 @@ class Solution(models.Model):
         if self.compile() != 'success':
             return 'cte'
 
-        tc_input_dir = os.path.join(settings.TEST_CASES_ROOT, self.question.code, 'inputs')
-        tc_input_dir_contents = sorted(os.listdir(tc_input_dir))
-        tc_output_dir = os.path.join(settings.TEST_CASES_ROOT, self.question.code, 'outputs')
-        tc_output_dir_contents = sorted(os.listdir(tc_output_dir))
+        tc_input_dir_contents = TestCase.objects.get_by_question(self.question.code)
+        tc_output_dir_contents = ExpectedOutput.objects.get_by_question(self.question.code)
 
         name = self.filename
 
         for t_in, t_out in zip(tc_input_dir_contents, tc_output_dir_contents):
-            msg = self.execute(os.path.join(tc_input_dir, t_in))
+            msg = self.execute(os.path.join(settings.MEDIA_ROOT, t_in.file.name))
             if msg != 'success':
                 self.delete_executable()
                 return msg
-            if not self.verify(os.path.join(tc_output_dir, t_out)):
+            if not self.verify(os.path.join(settings.MEDIA_ROOT, t_out.file.name)):
                 self.delete_executable()
                 return 'wa'
         self.delete_executable()

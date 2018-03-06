@@ -28,6 +28,8 @@ def submit_solution(request, code):
 def check_solution(request, code, pk):
     qs = Solution.objects.get_by_user_question(request.user.username, code)
     submission = qs.filter(pk=pk).first()
+    if submission is None:
+        raise Http404
 
     if submission.result is not None:
         return HttpResponse(submission.result)

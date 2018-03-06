@@ -34,10 +34,30 @@ def upload_test_case_file_location(instance, filename):
     return location + filename
 
 
+class TestCaseQuerySet(models.query.QuerySet):
+
+    def get_by_question(self, question_code):
+        return self.filter(question__code=question_code)
+
+
+class TestCaseManager(models.Manager):
+
+    def get_queryset(self):
+        return TestCaseQuerySet(self.model, using=self._db)
+
+    def get_by_question(self, question_code):
+        return self.get_queryset().get_by_question(question_code)
+
+
 class TestCase(models.Model):
     question = models.ForeignKey(Question)
     file = models.FileField(upload_to=upload_test_case_file_location)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    objects = TestCaseManager()
+
+    class Meta:
+        ordering = ['file']
 
     def __str__(self):
         return self.question.code + ' - ' + self.file.name.split('/')[-1]
@@ -48,10 +68,30 @@ def upload_expected_output_file_location(instance, filename):
     return location + filename
 
 
+class ExpectedOutputQuerySet(models.query.QuerySet):
+
+    def get_by_question(self, question_code):
+        return self.filter(question__code=question_code)
+
+
+class ExpectedOutputManager(models.Manager):
+
+    def get_queryset(self):
+        return ExpectedOutputQuerySet(self.model, using=self._db)
+
+    def get_by_question(self, question_code):
+        return self.get_queryset().get_by_question(question_code)
+
+
 class ExpectedOutput(models.Model):
     question = models.ForeignKey(Question)
     file = models.FileField(upload_to=upload_expected_output_file_location)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    objects = ExpectedOutputManager()
+
+    class Meta:
+        ordering = ['file']
 
     def __str__(self):
         return self.question.code + ' - ' + self.file.name.split('/')[-1]
