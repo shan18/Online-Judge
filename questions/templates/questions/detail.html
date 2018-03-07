@@ -6,5 +6,7 @@
 <p>{{ object.description }}</p>
 <br/>
 <a href="{{ object.get_submit_url }}">Submit Solution</a>
+<br>
+<a href="{% url 'grader:previous_submissions' object.code %}">Previous Submissions</a>
 
 {% endblock %}

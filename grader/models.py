@@ -76,6 +76,9 @@ class Solution(models.Model):
         filename, ext = os.path.splitext(self.file.name)
         return filename.split('/')[-1]
 
+    def get_absolute_url(self):
+        return self.file.url
+
     def delete_executable(self):
         name = self.filename
         if self.language == 'java':

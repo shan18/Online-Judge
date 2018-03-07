@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
 
 from .forms import SolutionForm
 from .models import Solution
@@ -48,3 +49,12 @@ def check_solution(request, code, pk):
     submission.save()
 
     return HttpResponse(submission.result)
+
+
+class PreviousSubmission(ListView):
+    template_name = 'grader/previous_submission.html'
+
+    def get_queryset(self, *args, **kwargs):
+        request = self.request
+        code = self.kwargs.get('code')
+        return Solution.objects.get_by_user_question(request.user.username, code)
