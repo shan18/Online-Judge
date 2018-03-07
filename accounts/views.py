@@ -1,11 +1,24 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
 from django.contrib.auth import authenticate, login, get_user_model
+from django.views.generic import DetailView
 
 from .forms import LoginForm, RegisterForm
 
 
 User = get_user_model()
+
+
+class ProfileView(DetailView):
+    template_name = 'accounts/profile.html'
+
+    def get_object(self, *args, **kwargs):
+        request = self.request
+        username = self.kwargs.get('username')
+        instance = User.objects.filter(username=username).first()
+        if instance is None:
+            raise Http404('User not found')
+        return instance
 
 
 def leaderboard_view(request):

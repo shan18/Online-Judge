@@ -5,7 +5,7 @@ from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 
 from .views import home
-from accounts.views import login_page, register_page, leaderboard_view
+from accounts.views import login_page, register_page, leaderboard_view, ProfileView
 
 
 urlpatterns = [
@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^register/$', register_page, name='register'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^leaderboard/$', leaderboard_view, name='leaderboard'),
+    url(r'^profile/(?P<username>[a-z]+)/$', ProfileView.as_view(), name='profile'),
     url(r'^questions/', include('questions.urls', namespace='question')),
     url(r'^question/', include('grader.urls', namespace='grader')),
     url(r'^admin/', admin.site.urls),
