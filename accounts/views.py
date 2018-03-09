@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
 from django.contrib.auth import authenticate, login, get_user_model
-from django.views.generic import DetailView, FormView
+from django.views.generic import DetailView, FormView, CreateView
 
 from .forms import LoginForm, RegisterForm
 
@@ -59,15 +59,21 @@ class LoginView(FormView):
 #     return render(request, 'accounts/login.html', context)
 
 
-def register_page(request):
-    if request.user.is_authenticated:
-        return redirect('home')
+class RegisterView(CreateView):
+    form_class = RegisterForm
+    template_name = 'accounts/register.html'
+    success_url = '/login/'
 
-    form = RegisterForm(request.POST or None)
-    context = {
-        'form': form
-    }
-    if form.is_valid():
-        form.save()
-        return redirect('login')
-    return render(request, 'accounts/register.html', context)
+
+# def register_page(request):
+#     if request.user.is_authenticated:
+#         return redirect('home')
+
+#     form = RegisterForm(request.POST or None)
+#     context = {
+#         'form': form
+#     }
+#     if form.is_valid():
+#         form.save()
+#         return redirect('login')
+#     return render(request, 'accounts/register.html', context)
