@@ -5,12 +5,12 @@ from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
 
 from .views import home
-from accounts.views import login_page, register_page, leaderboard_view, ProfileView
+from accounts.views import register_page, leaderboard_view, ProfileView, LoginView
 
 
 urlpatterns = [
     url(r'^$', home, name='home'),
-    url(r'^login/$', login_page, name='login'),
+    url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^register/$', register_page, name='register'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^leaderboard/$', leaderboard_view, name='leaderboard'),
