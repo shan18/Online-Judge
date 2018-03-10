@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.views.generic import DetailView, FormView, CreateView
 
 from .forms import LoginForm, RegisterForm
+from judge.mixins import AnonymousRequiredMixin
 
 
 User = get_user_model()
@@ -26,7 +27,7 @@ def leaderboard_view(request):
     return render(request, 'accounts/leaderboard.html', {'object_list': qs})
 
 
-class LoginView(FormView):
+class LoginView(AnonymousRequiredMixin, FormView):
     form_class = LoginForm
     template_name = 'accounts/login.html'
     success_url = '/'
@@ -59,7 +60,7 @@ class LoginView(FormView):
 #     return render(request, 'accounts/login.html', context)
 
 
-class RegisterView(CreateView):
+class RegisterView(AnonymousRequiredMixin, CreateView):
     form_class = RegisterForm
     template_name = 'accounts/register.html'
     success_url = '/login/'
