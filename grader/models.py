@@ -144,7 +144,8 @@ class Solution(models.Model):
             if msg != 'success':
                 self.delete_executable()
                 return msg
-            if not self.verify(os.path.join(settings.MEDIA_ROOT, t_out.file.name)):
+            t = ExpectedOutput.objects.get_by_question_test_case(self.question.code, t_in).first()
+            if not self.verify(os.path.join(settings.MEDIA_ROOT, t.file.name)):
                 self.delete_executable()
                 return 'wa'
         self.delete_executable()

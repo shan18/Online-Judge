@@ -73,6 +73,9 @@ class ExpectedOutputQuerySet(models.query.QuerySet):
     def get_by_question(self, question_code):
         return self.filter(question__code=question_code)
 
+    def get_by_question_test_case(self, question_code, test_case):
+        return self.get_by_question(question_code).filter(test_case=test_case)
+
 
 class ExpectedOutputManager(models.Manager):
 
@@ -82,9 +85,13 @@ class ExpectedOutputManager(models.Manager):
     def get_by_question(self, question_code):
         return self.get_queryset().get_by_question(question_code)
 
+    def get_by_question_test_case(self, question_code, test_case):
+        return self.get_queryset().get_by_question_test_case(question_code, test_case)
+
 
 class ExpectedOutput(models.Model):
     question = models.ForeignKey(Question)
+    test_case = models.ForeignKey(TestCase)
     file = models.FileField(upload_to=upload_expected_output_file_location)
     timestamp = models.DateTimeField(auto_now_add=True)
 
