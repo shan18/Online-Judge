@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.views.generic import DetailView, FormView, CreateView
 
 from .forms import LoginForm, RegisterForm
-from judge.mixins import AnonymousRequiredMixin
+from judge.mixins import AnonymousRequiredMixin, RequestFormAttachMixin
 
 
 User = get_user_model()
@@ -27,16 +27,17 @@ def leaderboard_view(request):
     return render(request, 'accounts/leaderboard.html', {'object_list': qs})
 
 
-class LoginView(AnonymousRequiredMixin, FormView):
+class LoginView(AnonymousRequiredMixin, RequestFormAttachMixin, FormView):
     form_class = LoginForm
     template_name = 'accounts/login.html'
     success_url = '/'
     default_url = '/'
 
-    def get_form_kwargs(self):
-        kwargs = super(LoginView, self).get_form_kwargs()
-        kwargs['request'] = self.request
-        return kwargs
+    # This method was removed because it was later used from within mixins
+    # def get_form_kwargs(self):
+    #     kwargs = super(LoginView, self).get_form_kwargs()
+    #     kwargs['request'] = self.request
+    #     return kwargs
 
 
 # def login_page(request):
