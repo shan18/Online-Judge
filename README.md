@@ -5,6 +5,7 @@ An online judge system that supports the following languages:
 - C
 - C++
 - Java
+- Python
 
 
 ## Instructions for setting up the project
