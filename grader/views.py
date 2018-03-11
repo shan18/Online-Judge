@@ -17,12 +17,14 @@ def submit_solution(request, code):
             instance = form.save(commit=False)
             instance.question = Question.objects.get_by_code(code)
             instance.user = request.user
+            instance.language = request.POST.get('language')
             instance.save()
             form.save()
             return redirect(reverse('grader:grade', kwargs={'code': code, 'pk': instance.pk}))
     else:
         form = SolutionForm()
-    return render(request, 'grader/user_submission.html', {'form': form})
+    language_list = ['c', 'cpp', 'java', 'py2', 'py3']
+    return render(request, 'grader/user_submission.html', {'form': form, 'language_list': language_list})
 
 
 @login_required

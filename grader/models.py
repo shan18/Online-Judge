@@ -83,7 +83,8 @@ class Solution(models.Model):
         name = self.filename
         if self.language == 'java':
             name += '.class'
-        os.remove(name)
+        if os.path.exists(name):
+            os.remove(name)
 
     def compile(self):
         name = self.filename
@@ -93,6 +94,8 @@ class Solution(models.Model):
             cmd = 'g++ -o {name} {name}.cpp'.format(name=name)
         elif self.language == 'java':
             cmd = 'javac {name}.java'.format(name=name)
+        elif 'py' in self.language:
+            return 'success'
         else:
             return 'cte'  # Compile Time Error
 
@@ -108,6 +111,10 @@ class Solution(models.Model):
             cmd = './{name} < {input_file} > {name}.txt'.format(name=name, input_file=input_test_case)
         elif self.language == 'java':
             cmd = 'java {name} < {input_file} > {name}.txt'.format(name=name, input_file=input_test_case)
+        elif self.language == 'py2':
+            cmd = 'python2 {name}.py < {input_file} > {name}.txt'.format(name=name, input_file=input_test_case)
+        elif self.language == 'py3':
+            cmd = 'python3 {name}.py < {input_file} > {name}.txt'.format(name=name, input_file=input_test_case)
         else:
             return None
 
@@ -153,7 +160,11 @@ class Solution(models.Model):
 
 
 def solution_pre_save_receiver(sender, instance, *args, **kwargs):
-    name, ext = os.path.splitext(instance.file.name)
-    instance.language = ext[1:]
+    if instance.language is None:
+        name, ext = os.path.splitext(instance.file.name)
+        lang = ext[1:]
+        if lang == 'py':
+            lang = 'py3'
+        instance.language = lang
 
 pre_save.connect(solution_pre_save_receiver, sender=Solution)
