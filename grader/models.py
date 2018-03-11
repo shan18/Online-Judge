@@ -142,20 +142,22 @@ class Solution(models.Model):
             return 'cte'
 
         tc_input_dir_contents = TestCase.objects.get_by_question(self.question.code)
-        tc_output_dir_contents = ExpectedOutput.objects.get_by_question(self.question.code)
-
         name = self.filename
 
-        for t_in, t_out in zip(tc_input_dir_contents, tc_output_dir_contents):
+        for t_in in tc_input_dir_contents:
             msg = self.execute(os.path.join(settings.MEDIA_ROOT, t_in.file.name))
             if msg != 'success':
                 self.delete_executable()
+                # self.save()
                 return msg
-            t = ExpectedOutput.objects.get_by_question_test_case(self.question.code, t_in).first()
-            if not self.verify(os.path.join(settings.MEDIA_ROOT, t.file.name)):
+            t_out = ExpectedOutput.objects.get_by_question_test_case(self.question.code, t_in).first()
+            if not self.verify(os.path.join(settings.MEDIA_ROOT, t_out.file.name)):
                 self.delete_executable()
+                # self.save()
                 return 'wa'
+            # self.score += 10
         self.delete_executable()
+        # self.save()
         return 'ac'
 
 

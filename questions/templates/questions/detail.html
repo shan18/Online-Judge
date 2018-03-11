@@ -3,7 +3,7 @@
 {% block content %}
 
 <h1>{{ object.code }} - {{ object.title }}</h1>
-<p>{{ object.description }}</p>
+<p>{{ object.description|linebreaks }}</p>
 <br/>
 <a href="{{ object.get_submit_url }}">Submit Solution</a>
 <br>

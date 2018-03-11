@@ -40,14 +40,14 @@ def check_solution(request, code, pk):
     submission.result = result
 
     if submission.result == 'ac':
-        submission.score = 100
+        submission.score = 100  # remove this after counting score for individual test cases
         previous_max_submission = qs.exclude(pk=submission.id).first()
         if previous_max_submission is not None:
             score_diff = submission.score - previous_max_submission.score
             if score_diff > 0:
                 submission.user.increment_score(score_diff)
         else:
-            submission.user.increment_score(100)
+            submission.user.increment_score(submission.score)
     submission.save()
 
     return HttpResponse(submission.result)
