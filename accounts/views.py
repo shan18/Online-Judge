@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
 from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, FormView, CreateView
 
 from .forms import LoginForm, RegisterForm
@@ -10,7 +11,7 @@ from judge.mixins import AnonymousRequiredMixin, RequestFormAttachMixin
 User = get_user_model()
 
 
-class ProfileView(DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     template_name = 'accounts/profile.html'
 
     def get_object(self, *args, **kwargs):
