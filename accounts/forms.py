@@ -54,13 +54,22 @@ class LoginForm(forms.Form):
         request = self.request
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
+
+        response = {
+            'success': False,
+            'message': 'Login failed.'
+        }
+
         user = authenticate(request, username=username, password=password)
         # If the is_active field is false, then the authenticate() method by default returns None
         if user is None:
-            raise forms.ValidationError('Invalid credentials')
+            response['message'] = 'The username or the password is incorrect! Please try again.'
+            # raise forms.ValidationError('Invalid credentials')
+            return response
         login(request, user)
+        response['success'] = True
         self.user = user
-        return True
+        return response
 
 
 

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, FormView, CreateView
@@ -33,6 +34,14 @@ class LoginView(AnonymousRequiredMixin, RequestFormAttachMixin, FormView):
     template_name = 'accounts/login.html'
     success_url = '/'
     default_url = '/'
+
+    def form_valid(self, form):
+        request = self.request
+        response = form.cleaned_data
+        if not response.get('success'):
+            messages.warning(request, response.get('message'))
+            return redirect('login')
+        return redirect('home')
 
     # This method was removed because it was later used from within mixins
     # def get_form_kwargs(self):
