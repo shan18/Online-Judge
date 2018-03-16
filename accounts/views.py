@@ -41,7 +41,7 @@ class LoginView(AnonymousRequiredMixin, RequestFormAttachMixin, FormView):
         if not response.get('success'):
             messages.warning(request, response.get('message'))
             return redirect('login')
-        return redirect('home')
+        return redirect(self.success_url)
 
     # This method was removed because it was later used from within mixins
     # def get_form_kwargs(self):

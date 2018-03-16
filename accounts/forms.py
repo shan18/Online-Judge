@@ -43,8 +43,12 @@ class UserAdminChangeForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label='Username')
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label='Username', widget=forms.TextInput(
+        attrs={'class': 'form-control my-2', 'placeholder': 'Username'}
+    ))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control my-2', 'placeholder': 'Password'}
+    ))
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
@@ -74,8 +78,21 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.ModelForm):
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
+    username = forms.CharField(label='Username', widget=forms.TextInput(
+        attrs={'class': 'form-control my-2', 'placeholder': 'Username'}
+    ))
+    full_name = forms.CharField(label='Full Name', widget=forms.TextInput(
+        attrs={'class': 'form-control my-2', 'placeholder': 'Full Name'}
+    ))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(
+        attrs={'class': 'form-control my-2', 'placeholder': 'Email'}
+    ))
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput(
+        attrs={'class': 'form-control my-2', 'placeholder': 'Password'}
+    ))
+    password2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput(
+        attrs={'class': 'form-control my-2', 'placeholder': 'Password'}
+    ))
 
     class Meta:
         model = User
@@ -90,6 +107,7 @@ class RegisterForm(forms.ModelForm):
         return password2
     
     def save(self, commit=True):
+        # Save the provided password in hashed format
         user = super(RegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         user.is_active = True  # TODO: set it to False and enable email activation
