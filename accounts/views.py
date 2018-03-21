@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.views.generic import DetailView, FormView, CreateView
 
 from .forms import LoginForm, RegisterForm
-from judge.mixins import LoginRequiredMixin, AnonymousRequiredMixin, RequestFormAttachMixin
+from judge.mixins import LoginRequiredMixin, AnonymousRequiredMixin, RequestFormAttachMixin, NextUrlMixin
 
 
 User = get_user_model()
@@ -28,20 +28,21 @@ def leaderboard_view(request):
     return render(request, 'accounts/leaderboard.html', {'object_list': qs})
 
 
-class LoginView(AnonymousRequiredMixin, RequestFormAttachMixin, FormView):
+class LoginView(AnonymousRequiredMixin, RequestFormAttachMixin, NextUrlMixin, FormView):
     form_class = LoginForm
     template_name = 'accounts/login.html'
     success_url = '/'
     default_url = '/'
+    default_next = '/'
 
     def form_valid(self, form):
-        # TODO: Add next_url handling functionality
         request = self.request
         response = form.cleaned_data
         if not response.get('success'):
             messages.warning(request, response.get('message'))
             return redirect('login')
-        return redirect(self.success_url)
+        next_path = self.get_next_url()
+        return redirect(next_path)
 
     # This method was removed because it was later used from within mixins
     # def get_form_kwargs(self):
