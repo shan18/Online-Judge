@@ -2,11 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, FormView, CreateView
 
 from .forms import LoginForm, RegisterForm
-from judge.mixins import AnonymousRequiredMixin, RequestFormAttachMixin
+from judge.mixins import LoginRequiredMixin, AnonymousRequiredMixin, RequestFormAttachMixin
 
 
 User = get_user_model()
@@ -36,6 +35,7 @@ class LoginView(AnonymousRequiredMixin, RequestFormAttachMixin, FormView):
     default_url = '/'
 
     def form_valid(self, form):
+        # TODO: Add next_url handling functionality
         request = self.request
         response = form.cleaned_data
         if not response.get('success'):

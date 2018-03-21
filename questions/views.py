@@ -1,8 +1,8 @@
 from django.views.generic import ListView, DetailView
 from django.http import Http404
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Question
+from judge.mixins import LoginRequiredMixin
 
 
 class QuestionListView(LoginRequiredMixin, ListView):
