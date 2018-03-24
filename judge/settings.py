@@ -29,6 +29,19 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = credentials.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = credentials.EMAIL_HOST_PASSWORD
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# This allows sendgrid to send emails to the specified id whenever server error occurs.
+DEFAULT_FROM_EMAIL = 'Morphosis <morphosis@nitmz.ac.in>'
+MANAGERS = (
+    ('Morphosis NITMZ', 'morphosis@nitmz.ac.in'),
+)
+ADMINS = MANAGERS
+
 
 # Application definition
 
