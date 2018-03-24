@@ -27,16 +27,19 @@ SECRET_KEY = credentials.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1', 'localhost']
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = credentials.EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = credentials.EMAIL_HOST_PASSWORD
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+BASE_URL = '127.0.0.1:8000'
+
+DEFAULT_ACTIVATION_DAYS = 7
 
 # This allows sendgrid to send emails to the specified id whenever server error occurs.
-DEFAULT_FROM_EMAIL = 'Morphosis <morphosis@nitmz.ac.in>'
+DEFAULT_FROM_EMAIL = 'Morphosis Code Warrior <morphosis@nitmz.ac.in>'
 MANAGERS = (
     ('Morphosis NITMZ', 'morphosis@nitmz.ac.in'),
 )

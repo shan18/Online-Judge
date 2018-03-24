@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^leaderboard/$', leaderboard_view, name='leaderboard'),
     url(r'^profile/(?P<username>[a-z]+)/$', ProfileView.as_view(), name='profile'),
+    url(r'^account/', include('accounts.urls', namespace='account')),
     url(r'^questions/', include('questions.urls', namespace='question')),
     url(r'^question/', include('grader.urls', namespace='grader')),
     url(r'^admin/', admin.site.urls),
