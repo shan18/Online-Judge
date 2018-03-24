@@ -72,7 +72,11 @@ class LoginForm(forms.Form):
         self.request = request
         super(LoginForm, self).__init__(*args, **kwargs)
 
-    def clean(self):
+    def clean(self):  # This clean() method gets the entire form's data
+        """
+        With this function, the form itself handles the entire login process and only if the login
+        is successful, it sends the data to the respective view.
+        """
         request = self.request
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
@@ -81,6 +85,28 @@ class LoginForm(forms.Form):
             'success': False,
             'message': 'Login failed.'
         }
+
+        user_qs = User.objects.filter(username=username, is_active=False)
+        if user_qs.exists():
+            # email is registered but not active
+            email = user_qs.first().email
+            link = reverse('account:resend-activation')
+            reconfirm_msg = """Go to <a href="{resend_link}">resend confirmation email</a>.
+            """.format(resend_link=link)
+            is_email_confirmable = EmailActivation.objects.filter(email=email).confirmable().exists()
+            email_activation_exists = EmailActivation.objects.email_exists(email).exists()
+            if is_email_confirmable:
+                msg1 = 'Please check your email to confirm your account or ' + reconfirm_msg.lower()
+                response['message'] = msg1
+                # raise forms.ValidationError(mark_safe(msg1))
+            elif email_activation_exists:
+                msg2 = 'Email not confirmed. ' + reconfirm_msg
+                response['message'] = msg2
+                # raise forms.ValidationError(mark_safe(msg2))
+            else:
+                response['message'] = 'This user is inactive.'
+                # raise forms.ValidationError('This user is inactive.')
+            return response
 
         user = authenticate(request, username=username, password=password)
         # If the is_active field is false, then the authenticate() method by default returns None
@@ -92,7 +118,6 @@ class LoginForm(forms.Form):
         response['success'] = True
         self.user = user
         return response
-
 
 
 class RegisterForm(forms.ModelForm):

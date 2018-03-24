@@ -92,7 +92,7 @@ class LoginView(AnonymousRequiredMixin, RequestFormAttachMixin, NextUrlMixin, Fo
         request = self.request
         response = form.cleaned_data
         if not response.get('success'):
-            messages.warning(request, response.get('message'))
+            messages.warning(request, mark_safe(response.get('message')))
             return redirect('login')
         next_path = self.get_next_url()
         return redirect(next_path)
