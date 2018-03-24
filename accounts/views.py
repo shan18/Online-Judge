@@ -51,8 +51,8 @@ class AccountEmailActivateView(FormMixin, View):
                     msg = """Your email has already been confirmed."""
                     messages.success(request, mark_safe(msg))
                     return redirect('login')
-            context = {'form': self.get_form(), 'key': key}  # get_form() works because of the mixin
-            return render(request, 'registration/activation_error.html', context)
+        context = {'form': self.get_form(), 'key': key}  # get_form() works because of the mixin
+        return render(request, 'registration/activation_error.html', context)
     
     def post(self, request, *args, **kwargs):
         # create a form to receive an email
