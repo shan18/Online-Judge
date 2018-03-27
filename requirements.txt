@@ -1,0 +1,3 @@
+boto==2.48.0
+decorator==4.1.2
+Django==1.11.8
