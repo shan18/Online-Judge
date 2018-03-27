@@ -3,6 +3,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
 
 from .views import home
 from accounts.views import RegisterView, leaderboard_view, ProfileView, LoginView
@@ -16,6 +17,8 @@ urlpatterns = [
     url(r'^leaderboard/$', leaderboard_view, name='leaderboard'),
     url(r'^profile/(?P<username>[a-z]+)/$', ProfileView.as_view(), name='profile'),
     url(r'^account/', include('accounts.urls', namespace='account')),
+    url(r'^accounts/', include('accounts.passwords.urls')),
+    url(r'^accounts/$', RedirectView.as_view(url='/account')),
     url(r'^questions/', include('questions.urls', namespace='question')),
     url(r'^question/', include('grader.urls', namespace='grader')),
     url(r'^admin/', admin.site.urls),

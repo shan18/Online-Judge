@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.views.generic import DetailView, FormView, CreateView, View
 from django.views.generic.edit import FormMixin
 from django.utils.safestring import mark_safe
+from django.core.urlresolvers import reverse
 
 from .forms import LoginForm, RegisterForm, ReactivateEmailForm
 from .models import EmailActivation
@@ -48,7 +49,9 @@ class AccountEmailActivateView(FormMixin, View):
             else:
                 activated_qs = qs.filter(activated=True)
                 if activated_qs.exists():
-                    msg = """Your email has already been confirmed."""
+                    reset_link = reverse('password_reset')
+                    msg = """Your email has already been confirmed.
+                    Do you want to <a href="{link}">reset you password</a>?""".format(link=reset_link)
                     messages.success(request, mark_safe(msg))
                     return redirect('login')
         context = {'form': self.get_form(), 'key': key}  # get_form() works because of the mixin
