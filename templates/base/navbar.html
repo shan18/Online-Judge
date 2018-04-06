@@ -4,6 +4,7 @@
 {% url 'logout' as logout_url %}
 {% url 'profile' request.user.username as profile_url %}
 {% url 'leaderboard' as leaderboard_url %}
+{% url 'contact' as contact_url %}
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<div class="container">
@@ -22,7 +23,7 @@
 					<a class="nav-link" href="{{ home_url }}">Home <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item {% if request.path == contact_url %}active{% endif %}">
-					<a class="nav-link" href="#">Contact</a>
+					<a class="nav-link" href="{{ contact_url }}">Contact</a>
 				</li>
 				<li class="nav-item {% if request.path == leaderboard_url %}active{% endif %}">
 					<a class="nav-link" href="{{ leaderboard_url }}">Leaderboard</a>
