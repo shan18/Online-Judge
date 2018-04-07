@@ -23,7 +23,7 @@
 			<tbody>
 				{% for object in object_list %}
 					<tr>
-						<td>{{ object.username }}</td>
+						<td><a href="{% url 'profile' object.username %}">{{ object.username }}</a></td>
 						<td>{{ object.score }}</td>
 					</tr>
 				{% endfor %}
