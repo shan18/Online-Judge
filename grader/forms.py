@@ -4,6 +4,7 @@ from .models import Solution
 
 
 class SolutionForm(forms.ModelForm):
+    file = forms.FileField(label='File')
 
     class Meta:
         model = Solution

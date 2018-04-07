@@ -1,11 +1,26 @@
 {% extends 'base.html' %}
 
+{% block base_head %}
+<title>Previous Submissions</title>
+{% endblock %}
+
 {% block content %}
 
-<ol>
-	{% for object in object_list %}
-		<li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
-	{% endfor %}
-</ol>
+<div class="row">
+	<div class="col-12 my-3">
+		<h1 class="text-center">Previous Submissions</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 my-3">
+		<ol>
+			{% for object in object_list %}
+			<li>
+				<a href="{{ object.get_absolute_url }}">{{ object.timestamp }}</a>
+			</li>
+			{% endfor %}
+		</ol>
+	</div>
+</div>
 
 {% endblock %}

@@ -2,11 +2,20 @@
 
 {% block content %}
 
-<h1>{{ object.code }} - {{ object.title }}</h1>
-<p>{{ object.description|linebreaks }}</p>
-<br/>
-<a href="{{ object.get_submit_url }}">Submit Solution</a>
-<br>
-<a href="{% url 'grader:previous_submissions' object.code %}">Previous Submissions</a>
+<div class="row">
+    <div class="col-12 my-3">
+        <h1 class="text-center">{{ object.code }}: {{ object.title }}</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-12 my-3 mr-auto">
+        <p>{{ object.description|linebreaks }}</p>
+        <br/>
+        <a class="btn btn-success" href="{{ object.get_submit_url }}">Submit Solution</a>
+    </div>
+    <div class="col-md-4 col-12 my-3">
+        <a class="btn btn-primary" href="{% url 'grader:previous_submissions' object.code %}">Previous Submissions</a>
+    </div>
+</div>
 
 {% endblock %}

@@ -1,10 +1,21 @@
 {% extends 'base.html' %}
 
+{% block base_head %}
+<title>Profile</title>
+{% endblock %}
+
 {% block content %}
 
-<br>
-Name - {{ object.get_full_name }} <br>
-Username - {{ object.username }} <br>
-Score - {{ object.score }} <br>
+<div class="row">
+	<div class="col-12 my-3">
+		<h1 class="text-center">{{ object.get_full_name }}</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 my-3">
+        <b>Username:</b> {{ object.username }}<br>
+        <b>Score:</b> {{ object.score }}
+	</div>
+</div>
 
 {% endblock %}

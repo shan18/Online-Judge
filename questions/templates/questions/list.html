@@ -2,11 +2,21 @@
 
 {% block content %}
 
-<h1>Select your question!</h1>
-<ul>
-	{% for object in object_list %}
-		<li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
-	{% endfor %}
-</ul>
+<div class="row">
+	<div class="col-12 my-3">
+		<h1 class="text-center">Questions</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 my-3">
+		<ul>
+			{% for object in object_list %}
+			<li>
+				<a href="{{ object.get_absolute_url }}">{{ object }}</a>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
 
 {% endblock %}

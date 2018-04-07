@@ -1,13 +1,35 @@
 {% extends 'base.html' %}
 
+{% block base_head %}
+<title>LeaderBoard</title>
+{% endblock %}
+
 {% block content %}
 
-<h1>LeaderBoard!</h1>
-<ol>
-	{% for object in object_list %}
-		<!-- <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li> -->
-		<li>{{ object.username }} - {{ object.get_full_name }}: {{ object.score }}</li>
-	{% endfor %}
-</ol>
+<div class="row">
+	<div class="col-12 my-3">
+		<h1 class="text-center">LeaderBoard</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 my-3">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Username</th>
+					<th>Score</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for object in object_list %}
+					<tr>
+						<td>{{ object.username }}</td>
+						<td>{{ object.score }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
 
 {% endblock %}
