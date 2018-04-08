@@ -56,6 +56,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # third party
+    'storages',
+
     # custom apps
     'accounts',
     'questions',
@@ -158,6 +161,8 @@ STATIC_ROOT = os.path.join(os.path.dirname(
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static_cdn', 'media_root')
+
+from judge.aws.conf import *
 
 
 # removing SSL/TLS settings for local environment
