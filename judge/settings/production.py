@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
-from judge import credentials
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -22,19 +20,27 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = credentials.SECRET_KEY
+try:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+except:
+    from judge import credentials
+    SECRET_KEY = credentials.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['.herokuapp.com']
 
 EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = credentials.EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = credentials.EMAIL_HOST_PASSWORD
+try:
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+except:
+    EMAIL_HOST_USER = credentials.EMAIL_HOST_USER
+    EMAIL_HOST_PASSWORD = credentials.EMAIL_HOST_PASSWORD
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-BASE_URL = '127.0.0.1:8000'
+BASE_URL = 'morphosis-code-warrior.herokuapp.com'
 
 DEFAULT_ACTIVATION_DAYS = 7
 
@@ -112,6 +118,13 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# This overrides the production to use heroku db instead of the local one.
+import dj_database_url
+
+db_from_env = dj_database_url.config()  # postgreSQL Database in heroku
+DATABASES['default'].update(db_from_env)
+DATABASES['default']['CONN_MAX_AGE'] = 500
 
 
 # Password validation
