@@ -21,10 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 # SECURITY WARNING: keep the secret key used in production secret!
 try:
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-except:
     from judge import credentials
     SECRET_KEY = credentials.SECRET_KEY
+except:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -33,11 +33,11 @@ ALLOWED_HOSTS = ['.herokuapp.com']
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 try:
-    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-except:
     EMAIL_HOST_USER = credentials.EMAIL_HOST_USER
     EMAIL_HOST_PASSWORD = credentials.EMAIL_HOST_PASSWORD
+except:
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 BASE_URL = 'morphosis-code-warrior.herokuapp.com'
@@ -169,8 +169,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static_files")
 ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(
-    BASE_DIR), 'static_cdn', 'static_root')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn', 'static_root')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static_cdn', 'media_root')

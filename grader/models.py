@@ -19,6 +19,8 @@ RESULT_TYPES = (
     ('sigabrt', 'SIGABRT')  # Runtime Error
 )
 
+SUBMISSION_EVALUATION_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'submission_evaluation')
+
 
 def upload_solution_file_location(instance, filename):
     location = 'submissions/{username}/'.format(username=instance.user.username)
@@ -79,12 +81,19 @@ class Solution(models.Model):
     def get_absolute_url(self):
         return self.file.url
 
-    def delete_executable(self):
-        name = self.filename
-        if self.language == 'java':
-            name += '.class'
-        if os.path.exists(name):
-            os.remove(name)
+    def clear_evaluation_path_contents(self):
+        # When files are stored in local server
+        #
+        # name = self.filename
+        # if self.language == 'java':
+        #     name += '.class'
+        # if os.path.exists(name):
+        #     os.remove(name)
+
+        # When files are stored in non-local server
+        os.chdir(SUBMISSION_EVALUATION_PATH)
+        for file in os.listdir(os.getcwd()):
+            os.remove(file)
 
     def compile(self):
         name = self.filename
@@ -137,7 +146,17 @@ class Solution(models.Model):
             return True
 
     def evaluate(self):
-        os.chdir(os.path.join(settings.MEDIA_ROOT, os.path.dirname(self.file.name)))
+        fetch_file_cmd = 'wget https:{root}{filename}'
+
+        # download the file from AWS
+        os.chdir(SUBMISSION_EVALUATION_PATH)
+        get_submission = fetch_file_cmd.format(
+            root=settings.MEDIA_ROOT,
+            filename=self.file.name
+        )
+        process = subprocess.check_output(get_submission, shell=True)
+
+        # compile submission
         if self.compile() != 'success':
             return 'cte'
 
@@ -145,18 +164,36 @@ class Solution(models.Model):
         name = self.filename
 
         for t_in in tc_input_dir_contents:
-            msg = self.execute(os.path.join(settings.MEDIA_ROOT, t_in.file.name))
+            # download the test case from AWS
+            get_test_case = fetch_file_cmd.format(
+                root=settings.MEDIA_ROOT,
+                filename=t_in.file.name
+            )
+            process = subprocess.check_output(get_test_case, shell=True)
+
+            # run submission against the input test case
+            msg = self.execute(t_in.filename)
             if msg != 'success':
-                self.delete_executable()
+                self.clear_evaluation_path_contents()
                 # self.save()
                 return msg
+
             t_out = ExpectedOutput.objects.get_by_question_test_case(self.question.code, t_in).first()
-            if not self.verify(os.path.join(settings.MEDIA_ROOT, t_out.file.name)):
-                self.delete_executable()
+
+            # download the expected output from AWS
+            get_test_case = fetch_file_cmd.format(
+                root=settings.MEDIA_ROOT,
+                filename=t_out.file.name
+            )
+            process = subprocess.check_output(get_test_case, shell=True)
+
+            # verify the output with the expected output
+            if not self.verify(t_out.filename):
+                self.clear_evaluation_path_contents()
                 # self.save()
                 return 'wa'
             # self.score += 10
-        self.delete_executable()
+        self.clear_evaluation_path_contents()
         # self.save()
         return 'ac'
 

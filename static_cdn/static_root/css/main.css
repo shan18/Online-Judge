@@ -1,0 +1,17 @@
+html, body {
+	height: 100%;
+}
+
+#wrap {
+	min-height: 75%;
+}
+
+.dropdown .dropdown-menu a:hover {
+	background-color: #dcdce1;
+  	color: #000;
+}
+
+a.dropdown-item.active {
+	background-color:#D9CDCA;
+  	color: #000;
+}

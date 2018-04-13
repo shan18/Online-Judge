@@ -4,12 +4,6 @@ import os
 
 # AWS credentials
 try:
-    AWS_GROUP_NAME = os.environ.get('AWS_GROUP_NAME')
-    AWS_USER_NAME = os.environ.get('AWS_USER_NAME')
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-except:
     from judge import credentials
 
     AWS_GROUP_NAME = credentials.AWS_GROUP_NAME
@@ -17,6 +11,12 @@ except:
     AWS_ACCESS_KEY_ID = credentials.AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY = credentials.AWS_SECRET_ACCESS_KEY
     AWS_STORAGE_BUCKET_NAME = credentials.AWS_STORAGE_BUCKET_NAME
+except:
+    AWS_GROUP_NAME = os.environ.get('AWS_GROUP_NAME')
+    AWS_USER_NAME = os.environ.get('AWS_USER_NAME')
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
 
 AWS_FILE_EXPIRE = 200

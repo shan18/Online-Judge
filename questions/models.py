@@ -62,6 +62,11 @@ class TestCase(models.Model):
     def __str__(self):
         return self.question.code + ' - ' + self.file.name.split('/')[-1]
 
+    @property
+    def filename(self):
+        """ Returns the name of the file without the preceding path """
+        return self.file.name.split('/')[-1]
+
 
 def upload_expected_output_file_location(instance, filename):
     location = 'test_cases/{code}/outputs/'.format(code=instance.question.code)
@@ -102,3 +107,8 @@ class ExpectedOutput(models.Model):
 
     def __str__(self):
         return self.question.code + ' - ' + self.file.name.split('/')[-1]
+
+    @property
+    def filename(self):
+        """ Returns the name of the file without the preceding path """
+        return self.file.name.split('/')[-1]

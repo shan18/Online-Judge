@@ -1,6 +1,7 @@
 **/credentials.py
 notes/
 
+.env
 .idea/
 .vscode/
 **/__pycache__/
