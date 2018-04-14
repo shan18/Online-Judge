@@ -18,7 +18,6 @@ An online judge system that supports the following languages:
 ### Third Party Services Used
 
 - **Amazon Web Services (AWS)**: Stores all static and media files.
-- **Heroku**: Used to deploy the project in production environment.
 - **sendgrid**: Used to send transactional emails like email-id verification.
 
 
@@ -38,15 +37,12 @@ An online judge system that supports the following languages:
 	- Change the email and name in `DEFAULT_FROM_EMAIL` and `MANAGERS` in all *settings files* with your name and email.
 
 4. **Amazon Web Services (AWS) setup**:  
-	Create and setup the IAM User and bucket in AWS, then add all the required values to **credentials.py** (mentioned under the comment *aws keys*).
+	Create and setup the IAM User and bucket in AWS, then add all the required values to **credentials.py**
 
-5. **Heroku setup**:  
-	Follow this guide for reference: [Heroku Setup](https://github.com/shan18/Kart/blob/master/notes/heroku_setup.md).
-
-6. Run the following commands  
+5. Run the following commands  
 `python manage.py makemigrations`  
 `python manage.py migrate`  
 `python manage.py collectstatic`
 
-7. Now load the **questions**, **test cases** and **expected outputs** into the database  
+6. Now load the **questions**, **test cases** and **expected outputs** into the database  
 `python manage.py loaddata questions/fixtures/questions.json`

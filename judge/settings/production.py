@@ -29,7 +29,7 @@ except:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = []
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 try:
@@ -40,7 +40,7 @@ except:
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-BASE_URL = 'morphosis-code-warrior.herokuapp.com'
+BASE_URL = ''
 
 DEFAULT_ACTIVATION_DAYS = 7
 
@@ -118,13 +118,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-# This overrides the production to use heroku db instead of the local one.
-import dj_database_url
-
-db_from_env = dj_database_url.config()  # postgreSQL Database in heroku
-DATABASES['default'].update(db_from_env)
-DATABASES['default']['CONN_MAX_AGE'] = 500
 
 
 # Password validation
