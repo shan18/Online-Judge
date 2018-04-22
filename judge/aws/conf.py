@@ -25,7 +25,7 @@ AWS_QUERYSTRING_AUTH = False
 
 DEFAULT_FILE_STORAGE = 'judge.aws.utils.MediaRootS3BotoStorage'
 STATICFILES_STORAGE = 'judge.aws.utils.StaticRootS3BotoStorage'
-S3DIRECT_REGION = 'ap-southeast-1'
+S3DIRECT_REGION = 'ap-south-1'
 S3_URL = '//%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 MEDIA_URL = '//%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
 MEDIA_ROOT = MEDIA_URL
