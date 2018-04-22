@@ -23,7 +23,7 @@ def submit_solution(request, code):
             return redirect(reverse('grader:grade', kwargs={'code': code, 'pk': instance.pk}))
     else:
         form = SolutionForm()
-    language_list = ['c', 'cpp', 'java', 'py2', 'py3']
+    language_list = ['c', 'cpp', 'py2', 'py3']
     return render(request, 'grader/user_submission.html', {'form': form, 'language_list': language_list})
 
 

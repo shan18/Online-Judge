@@ -1,5 +1,6 @@
 **/credentials.py
 notes/
+static_cdn/static_root/admin/
 
 .env
 .idea/

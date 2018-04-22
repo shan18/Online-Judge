@@ -104,8 +104,8 @@ class Solution(models.Model):
             cmd = 'gcc -o {name} {name}.c'.format(name=name)
         elif self.language == 'cpp':
             cmd = 'g++ -o {name} {name}.cpp'.format(name=name)
-        elif self.language == 'java':
-            cmd = 'javac {name}.java'.format(name=name)
+        # elif self.language == 'java':
+        #     cmd = 'javac {name}.java'.format(name=name)
         elif 'py' in self.language:
             return 'success'
         else:
@@ -121,8 +121,8 @@ class Solution(models.Model):
         name = self.filename
         if self.language in ['c', 'cpp']:
             cmd = './{name} < {input_file} > {name}.txt'.format(name=name, input_file=input_test_case)
-        elif self.language == 'java':
-            cmd = 'java {name} < {input_file} > {name}.txt'.format(name=name, input_file=input_test_case)
+        # elif self.language == 'java':
+        #     cmd = 'java {name} < {input_file} > {name}.txt'.format(name=name, input_file=input_test_case)
         elif self.language == 'py2':
             cmd = 'python2 {name}.py < {input_file} > {name}.txt'.format(name=name, input_file=input_test_case)
         elif self.language == 'py3':
