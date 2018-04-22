@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
 from .views import home, contact_page
-from accounts.views import RegisterView, leaderboard_view, ProfileView, LoginView
+from accounts.views import RegisterView, ProfileView, LoginView, LeaderBoardView
 
 
 urlpatterns = [
@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^register/$', RegisterView.as_view(), name='register'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^contact/$', contact_page, name='contact'),
-    url(r'^leaderboard/$', leaderboard_view, name='leaderboard'),
+    url(r'^leaderboard/$', LeaderBoardView.as_view(), name='leaderboard'),
     url(r'^profile/(?P<username>[a-z]+)/$', ProfileView.as_view(), name='profile'),
     url(r'^account/', include('accounts.urls', namespace='account')),
     url(r'^accounts/', include('accounts.passwords.urls')),

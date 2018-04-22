@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 from questions.models import Question, TestCase, ExpectedOutput
 
@@ -211,6 +212,7 @@ class Solution(models.Model):
         
         # Set overall result status
         self.score = ac_count * 10
+        self.timestamp = timezone.now()
         if ac_count == 10:
             self.result = 'ac'
         elif tle_count == 10:

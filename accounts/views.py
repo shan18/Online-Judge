@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
-from django.views.generic import DetailView, FormView, CreateView, View
+from django.views.generic import ListView, DetailView, FormView, CreateView, View
 from django.views.generic.edit import FormMixin
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
@@ -26,9 +26,9 @@ class ProfileView(LoginRequiredMixin, DetailView):
         return instance
 
 
-def leaderboard_view(request):
-    qs = User.objects.all()
-    return render(request, 'accounts/leaderboard.html', {'object_list': qs})
+class LeaderBoardView(ListView):
+    queryset = User.objects.all()
+    template_name = 'accounts/leaderboard.html'
 
 
 class AccountEmailActivateView(FormMixin, View):
