@@ -16,7 +16,8 @@ RESULT_TYPES = (
     ('wa', 'WA'),           # Wrong Answer
     ('tle', 'TLE'),         # Time Limit Exceeded
     ('cte', 'CTE'),         # Compile Time Error
-    ('sigabrt', 'SIGABRT')  # Runtime Error
+    ('sigabrt', 'SIGABRT'),  # Runtime Error
+    ('pc', 'Partially Correct')  # Partially Correct
 )
 
 SUBMISSION_EVALUATION_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'submission_evaluation')
@@ -93,7 +94,8 @@ class Solution(models.Model):
         # When files are stored in non-local server
         os.chdir(SUBMISSION_EVALUATION_PATH)
         for file in os.listdir(os.getcwd()):
-            os.remove(file)
+            if file != 'version_control.txt':
+                os.remove(file)
 
     def compile(self):
         name = self.filename
@@ -159,10 +161,16 @@ class Solution(models.Model):
         # compile submission
         if self.compile() != 'success':
             return 'cte'
-
+        
+        # Fetch test case model
         tc_input_dir_contents = TestCase.objects.get_by_question(self.question.code)
         name = self.filename
 
+        # Execute submissions against input test cases
+        ac_count = 0
+        tle_count = 0
+        sigabrt_count = 0
+        wa_count = 0
         for t_in in tc_input_dir_contents:
             # download the test case from AWS
             get_test_case = fetch_file_cmd.format(
@@ -174,9 +182,14 @@ class Solution(models.Model):
             # run submission against the input test case
             msg = self.execute(t_in.filename)
             if msg != 'success':
-                self.clear_evaluation_path_contents()
+                if msg == 'tle':
+                    tle_count += 1
+                elif msg == 'sigabrt':
+                    sigabrt_count += 1
+                continue
+                # self.clear_evaluation_path_contents()
                 # self.save()
-                return msg
+                # return msg
 
             t_out = ExpectedOutput.objects.get_by_question_test_case(self.question.code, t_in).first()
 
@@ -189,13 +202,28 @@ class Solution(models.Model):
 
             # verify the output with the expected output
             if not self.verify(t_out.filename):
-                self.clear_evaluation_path_contents()
+                # self.clear_evaluation_path_contents()
                 # self.save()
-                return 'wa'
-            # self.score += 10
+                # return 'wa'
+                wa_count += 1
+                continue
+            ac_count += 1
+        
+        # Set overall result status
+        self.score = ac_count * 10
+        if ac_count == 10:
+            self.result = 'ac'
+        elif tle_count == 10:
+            self.result = 'tle'
+        elif sigabrt_count == 10:
+            self.result = 'sigabrt'
+        elif wa_count == 10 or ac_count == 0:
+            self.result = 'wa'
+        else:
+            self.result = 'pc'
+
         self.clear_evaluation_path_contents()
-        # self.save()
-        return 'ac'
+        self.save()
 
 
 def solution_pre_save_receiver(sender, instance, *args, **kwargs):
@@ -204,6 +232,10 @@ def solution_pre_save_receiver(sender, instance, *args, **kwargs):
         lang = ext[1:]
         if lang == 'py':
             lang = 'py3'
+        elif lang == 'c':
+            lang = 'c'
+        elif lang == 'cpp':
+            lang = 'cpp'
         instance.language = lang
 
 pre_save.connect(solution_pre_save_receiver, sender=Solution)

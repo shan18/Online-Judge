@@ -35,11 +35,10 @@ def check_solution(request, code, pk):
         raise Http404
 
     if submission.result is None:
-        result = submission.evaluate()
-        submission.result = result
+        # run submission
+        submission.evaluate()
 
-        if submission.result == 'ac':
-            submission.score = 100  # remove this after counting score for individual test cases
+        if submission.result == 'ac' or submission.result == 'pc':
             previous_max_submission = qs.exclude(pk=submission.id).first()
             if previous_max_submission is not None:
                 score_diff = submission.score - previous_max_submission.score
@@ -47,7 +46,6 @@ def check_solution(request, code, pk):
                     submission.user.increment_score(score_diff)
             else:
                 submission.user.increment_score(submission.score)
-        submission.save()
 
     return render(request, 'grader/result.html', {
         'result': submission.result,
