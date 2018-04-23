@@ -1,17 +1,35 @@
+import time
+import pytz
+from datetime import datetime
+from datetime import date
+from datetime import time
+from datetime import timedelta
+
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
+from django.utils import timezone
+from django.utils.timezone import activate
+from django.utils.timezone import localtime, now
 
 from .forms import SolutionForm
 from .models import Solution
 from questions.models import Question
 
 
+future = datetime(2018, 4, 22, 10, 00, 00)
+future = future + timedelta(hours=2)
+
+
 @login_required
 def submit_solution(request, code):
     if request.method == 'POST':
+        # activate(settings.TIME_ZONE)
+        current_time = datetime.now()
+        # if current_time>future:
+        #     return HttpResponse("Contest has ended")
         form = SolutionForm(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
