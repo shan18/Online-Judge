@@ -5,31 +5,49 @@
 {% endblock %}
 
 {% block content %}
+{% if msg %}
+<div class="alert alert-danger alert-dismissible">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{msg}}
+</div>
+{% endif %}
 
 <div class="row">
 	<div class="col-12 my-3">
 		<h1 class="text-center">LeaderBoard</h1>
 	</div>
 </div>
+<div class="jumbotron" style="padding-top: 15px;padding-left: 10px ;padding-bottom: 5px;margin-bottom:10px;margin-top:8px; ">
 <div class="row">
 	<div class="col-12 my-3">
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Username</th>
-					<th>Score</th>
+					<th class="text-center">Rank</th>
+					<th class="text-center">Username</th>
+					<th class="text-center">Score</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for object in object_list %}
-					<tr>
-						<td><a href="{% url 'profile' object.username %}">{{ object.username }}</a></td>
-						<td>{{ object.score }}</td>
+				{% if object.username == username%}
+					<tr  style="background-color:rgb(224, 129, 129)">
+						<td class="text-center">{{forloop.counter}}</td>
+						<td class="text-center"><a href="{% url 'profile' object.username %}">{{ object.username }}</a></td>
+						<td class="text-center">{{ object.score }}</td>
 					</tr>
+					{% else %}
+					<tr>
+							<td class="text-center">{{forloop.counter}}</td>
+							<td class="text-center"><a href="{% url 'profile' object.username %}">{{ object.username }}</a></td>
+							<td class="text-center">{{ object.score }}</td>
+						</tr>
+					{% endif %}
 				{% endfor %}
 			</tbody>
 		</table>
 	</div>
 </div>
-
+</div>
+<a href="{% url 'question:list' %}"><button type="button" class="btn btn-success">Back To Problems</button></a>
 {% endblock %}

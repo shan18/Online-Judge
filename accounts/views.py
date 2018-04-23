@@ -11,7 +11,6 @@ from .forms import LoginForm, RegisterForm, ReactivateEmailForm
 from .models import EmailActivation
 from judge.mixins import LoginRequiredMixin, AnonymousRequiredMixin, RequestFormAttachMixin, NextUrlMixin
 
-
 User = get_user_model()
 
 
@@ -29,7 +28,6 @@ class ProfileView(LoginRequiredMixin, DetailView):
 class LeaderBoardView(ListView):
     queryset = User.objects.all()
     template_name = 'accounts/leaderboard.html'
-
 
 class AccountEmailActivateView(FormMixin, View):
     success_url = '/login/'

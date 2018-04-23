@@ -1,21 +1,17 @@
-{% extends 'base.html' %}
-
-{% block base_head %}
+{% extends 'base.html' %} {% block base_head %}
 <title>Profile</title>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 
 <div class="row">
 	<div class="col-12 my-3">
 		<h1 class="text-center">{{ object.get_full_name }}</h1>
 	</div>
 </div>
-<div class="row">
-	<div class="col-12 my-3">
-        <b>Username:</b> {{ object.username }}<br>
-        <b>Score:</b> {{ object.score }}
-	</div>
+<div class="jumbotron" style="padding-top: 15px;padding-left: 10px ; margin-left: 17%;margin-right: 17%; padding-bottom: 5px;margin-bottom:10px;margin-top:8px; padding-right: 15px">
+			<b>Username:</b> {{ object.username }}
+			<p style="color: green">Score:{{ object.score }} </p>
+			<a href="{% url 'question:list' %}">
+				<button style="text-align: center" type="button" class="btn btn-success">Back To Problems</button>
+			</a>
 </div>
-
 {% endblock %}
