@@ -30,7 +30,7 @@
 			</div>
 			<script>
 											// Set the date we're counting down to
-						var countDownDate = new Date("Apr 24, 2018 15:26:25").getTime();
+						var countDownDate = new Date("Apr 25, 2018 1:26:25").getTime();
 
 						// Update the count 	<h1>Countdown Clock</h1>down every 1 second
 						var x = setInterval(function() {
@@ -56,8 +56,9 @@
 								// If the count down is over, write some text 
 								if (distance < 0) {
 										clearInterval(x);
-										document.getElementById("demo").innerHTML = "EXPIRED";
-								}
+										document.getElementById("hour").innerHTML = "0";
+										document.getElementById("minute").innerHTML = "0";
+										document.getElementById("second").innerHTML = "0";								}
 									}, 1000);
 			</script>
 		</div>
