@@ -15,3 +15,50 @@ a.dropdown-item.active {
 	background-color:#D9CDCA;
   	color: #000;
 }
+
+body{
+	text-align: center;
+	background: rgb(201, 218, 215); 
+  font-family: sans-serif;
+  font-weight: 100;
+} 
+
+h1{
+  color: #396;
+  font-weight: 100;
+  font-size: 40px;
+  /* margin: 40px 0px 20px;*/
+} 
+
+#clockdiv{
+	font-family: sans-serif;
+	color: #fff;
+	font-weight: 100;
+	font-size: 30px;
+}
+
+#clockdiv > div{
+	padding: 10px;
+	border-radius: 3px;
+	background: rgb(7, 43, 58);
+	display: inline-block;
+}
+
+#clockdiv div > span{
+	padding: 15px;
+	border-radius: 3px;
+	background: rgb(140, 142, 175);
+	display: inline-block;
+}
+
+.smalltext{
+	padding-top: 5px;
+	font-size: 16px;
+}
+#ques{
+	background-color: rgb(233, 236, 239);
+}
+
+#question{
+ text-decoration-color: #396;
+}
