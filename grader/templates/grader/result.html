@@ -6,20 +6,20 @@
 
 {% block content %}
 
-<div class="row">
+<div class="jumbotron" style="padding-top: 15px;padding-left: 10px ;padding-bottom: 5px;margin-bottom:10px;margin-top:8px;">
 	<div class="col-12 text-center pt-5 pb-3">
         {% if result == 'ac' %}
-            <h1 class="mt-5 pt-5">Correct Answer</h1>
+            <h1 style="color:green" class="mt-5 pt-5">Correct Answer</h1>
         {% elif result == 'wa' %}
-            <h1 class="mt-5 pt-5">Wrong Answer</h1>
+            <h1 style="color: red" class="mt-5 pt-5">Wrong Answer</h1>
         {% elif result == 'tle' %}
-            <h1 class="mt-5 pt-5">Time Limit Exceeded</h1>
+            <h1 style="color: red" class="mt-5 pt-5">Time Limit Exceeded</h1>
         {% elif result == 'cte' %}
-            <h1 class="mt-5 pt-5">Compile Time Error</h1>
+            <h1 style="color: red" class="mt-5 pt-5">Compile Time Error</h1>
         {% elif result == 'sigabrt' %}
-            <h1 class="mt-5 pt-5">SIGABRT</h1>
+            <h1 style="color: red" class="mt-5 pt-5">SIGABRT</h1>
         {% elif result == 'pc' %}
-            <h1 class="mt-5 pt-5">Partially Correct</h1>
+            <h1 style="color:rgb(230, 230, 50)" class="mt-5 pt-5">Partially Correct</h1>
         {% endif %}
     </div>
     <div class="col-12 text-center pb-5">
@@ -28,7 +28,8 @@
 </div>
 <div class="row">
 	<div class="col-12 my-3 text-center">
-        <a href="{% url 'question:list' %}">Go back to questions</a>
+            <a class="btn btn-primary" href="{% url  'question:list' %}">Go back to problems</a>
+        <!-- <a href="{% url 'question:list' %}">Go back to questions</a> -->
 	</div>
 </div>
 

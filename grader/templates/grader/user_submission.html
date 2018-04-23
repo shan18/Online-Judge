@@ -1,10 +1,6 @@
-{% extends 'base.html' %}
-
-{% block base_head %}
+{% extends 'base.html' %} {% block base_head %}
 <title>Submit Solution</title>
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 
 <div class="row">
   <div class="col-12 my-3">
@@ -13,24 +9,40 @@
 </div>
 <div class="row">
   <div class="col-12 my-3">
+
     <form method="post" enctype="multipart/form-data"> {% csrf_token %}
-      {{ form.as_p }}
-      Language:
-      {% for language in language_list %}
-        <input type="radio" name="language" value="{{ language }}">
-        {% if language == 'c' %}
-          C
-        {% elif language == 'cpp' %}
-          C++
-        {% elif language == 'py2' %}
-          Python 2
-        {% elif language == 'py3' %}
-          Python 3
-        {% endif %}
-      {% endfor %}
-      <br>
-      <button class="btn btn-success my-3" type="submit">Submit</button>
+      <div class="jumbotron">
+        {{ form.as_p }}
+      </div>
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-5"></div>
+
+          <div class="col-5" style="text-align: left">
+            Select Language:
+            <br> {% for language in language_list %}
+            <input type="radio" name="language"  value="{{ language }}"> 
+            {% if language == 'c' %} 
+             C 
+            {% elif language == 'cpp' %}
+             C++ 
+             {% elif language == 'py2' %} 
+             Python 2 
+             {% elif language == 'py3' %} 
+             Python 3
+            {% endif %}
+            <br> {% endfor %}
+            <br>
+            <button class="btn btn-success my-3" type="submit">Submit</button>
+          </div>
+          <div class="col-2"></div>
+        </div>
+
+
+
+      </div>
     </form>
+
   </div>
 </div>
 
