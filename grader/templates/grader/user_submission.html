@@ -21,7 +21,7 @@
           <div class="col-5" style="text-align: left">
             Select Language:
             <br> {% for language in language_list %}
-            <input type="radio" name="language"  value="{{ language }}"> 
+            <input type="radio" required name="language"  value="{{ language }}"> 
             {% if language == 'c' %} 
              C 
             {% elif language == 'cpp' %}
