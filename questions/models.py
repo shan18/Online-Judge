@@ -1,5 +1,13 @@
+import os
+
 from django.db import models
 from django.urls import reverse
+
+
+def upload_question_image_location(instance, filename):
+    file, ext = os.path.splitext(filename)
+    location = 'questions/{code}{extension}'.format(code=instance.code, extension=ext)
+    return location
 
 
 class QuestionManager(models.Manager):
@@ -14,7 +22,7 @@ class QuestionManager(models.Manager):
 class Question(models.Model):
     code = models.CharField(unique=True, max_length=10)
     title = models.CharField(unique=True, max_length=120)
-    description = models.TextField()
+    description = models.ImageField(upload_to=upload_question_image_location)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = QuestionManager()
