@@ -130,6 +130,8 @@ class RegisterForm(forms.ModelForm):
     email = forms.EmailField(label='Email', widget=forms.EmailInput(
         attrs={'class': 'form-control my-2', 'placeholder': 'Email'}
     ))
+
+
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput(
         attrs={'class': 'form-control my-2', 'placeholder': 'Password'}
     ))
