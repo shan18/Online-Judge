@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import Http404
+from django.http import Http404,HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
 from django.views.generic import ListView, DetailView, FormView, CreateView, View
@@ -10,6 +10,8 @@ from django.core.urlresolvers import reverse
 from .forms import LoginForm, RegisterForm, ReactivateEmailForm
 from .models import EmailActivation
 from judge.mixins import LoginRequiredMixin, AnonymousRequiredMixin, RequestFormAttachMixin, NextUrlMixin
+
+from grader.util import passkey
 
 User = get_user_model()
 
@@ -129,11 +131,17 @@ class RegisterView(AnonymousRequiredMixin, CreateView):
     form_class = RegisterForm
     template_name = 'accounts/register.html'
     success_url = '/login/'
-
+    
     def form_valid(self, form):
-        super(RegisterView, self).form_valid(form)
-        messages.success(self.request, 'Verification link sent! Please check your email.')
-        return redirect(self.success_url)
+        passkey_validation= self.request.POST['passkey']
+        if passkey_validation != passkey:
+            # return HttpResponse(passkey)
+            messages.success(self.request, 'Please enter a valid passkey.')
+            return redirect('register')
+        else:
+            super(RegisterView, self).form_valid(form)
+            messages.success(self.request, 'Verification link sent! Please check your email.')
+            return redirect(self.success_url)
 
 
 # def register_page(request):
