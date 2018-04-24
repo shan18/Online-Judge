@@ -1,43 +1,73 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		{% include 'base/css.html' %}
-		{% include 'base/js.html' %}
-		{% block base_head %}{% endblock %}
-	</head>
-	<body>
 
-		{% include 'base/navbar.html' with brand_name='Code Warrior' %}
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> {% include 'base/css.html' %} {% include 'base/js.html' %} {% block base_head %}{% endblock %}
+</head>
 
-		<div id="wrap">
-			<div id="main" class="clear-top">
-				{% if messages %}
-				<div class="container mt-3">
-					<div class="alert alert-success messages">
-						{% for message in messages %}
-						<span{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-								{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-								{{ message }}
+<body>
+
+	{% include 'base/navbar.html' with brand_name='Code Warrior' %}
+
+	<div id="wrap">
+		<div id="main" class="clear-top">
+			{% if messages %}
+			<div class="container mt-3">
+				<div class="alert alert-success messages">
+					{% for message in messages %}
+					<span{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+						{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %} {{ message }}
 						</span>
-					</div>
-						{% endfor %}
 				</div>
-				{% endif %}
+				{% endfor %}
+			</div>
+			{% endif %}
 
-				<div class="container">
-					{% block content %}{% endblock %}
-				</div>
+			<div class="container">
+				{% block content %}{% endblock %}
+			</div>
 
-				<div class="container-fluid">
-					{% block content_fluid %}{% endblock %}
-				</div>
+			<div class="container-fluid">
+				{% block content_fluid %}{% endblock %}
 			</div>
 		</div>
+	</div>
+		<footer>
+			<div class="container-fluid" >
+				<div class="developer" style="margin-top: 20px;border-radius: 3%">
+					<div class="row">
+						<div class="col-6" style="margin-top: 10%">
+							<h4 style="margin-top: 5%;color: rgb(37, 35, 35);text-align: left;">Developers</h4>
+							<ul>
+								<li style="color: rgb(37, 35, 35);text-align: left;">Shantanu Acharya</li>
+								<li style="color: rgb(37, 35, 35);text-align: left;">Sunil Dinday</li>
+								<li style="color: rgb(37, 35, 35);text-align: left;">Ranjeet Kumar</li>
+							</ul>
+						</div>
+						<div class="col-6" style="margin-top: 10%">
+							<h4 style="margin-top: 5%;color: rgb(17, 16, 16);text-align: left;">Social Media</h4>
+							<a href="" target="_blank" style="text-align: left; padding-left: 10px">
+								<img style="color: black solid #000;" alt="google play store" src="https://www.solodev.com/assets/footer/androidstore.png" style="padding-left: 0px">
+							</a>
+							<a href="" target="_blank" style="padding-top: 15px">
+									<img src="https://image.ibb.co/mLkYic/fb.png" alt="fb" border="0" style="width:50px;height:50px;">
+							</a>
+								<a href="" target="_blank" style="padding-top: 15px">
+									<img src="https://image.ibb.co/eHnJGx/insta.jpg" alt="insta" border="0" style="width:50px;height:50px;">	
+								</a>
+						</div> 
+					</div>
 
-		{% block javascript %}{% endblock %}
+				</div>
+			</div>
 		
-	</body>
+		</footer>
+	</div>
+
+	{% block javascript %}{% endblock %}
+
+</body>
+
 </html>
