@@ -62,3 +62,18 @@ h1{
 #question{
  text-decoration-color: #396;
 }
+
+.footer {
+	position: relative;
+	margin-top: -80px; /* negative value of footer height */
+	height: 80px;
+	clear:both;
+	padding-top:20px;
+}
+
+.footer-custom {
+	background-color: #dcdce1;
+	padding: 60px 40px;
+	color: #000;
+}
+
