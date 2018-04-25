@@ -6,12 +6,12 @@
 
 {% block content %}
 <div class="text-center my-3">
-    <h1>{{ title }}</h1>
+    <h1 style="color: whitesmoke">{{ title }}</h1>
 </div>
-<div class="row">
+<div style="color: whitesmoke" class="row">
     <div class="col">
         <div class="col-md-6 col-12 mx-auto my-3">
-            <p class="text-center">{{ content }}</p>
+            <p style="color: whitesmoke" class="text-center">{{ content }}</p>
             <form method="POST" action="{% url 'contact' %}"> {% csrf_token %}
                 {{ form.as_p }}
                 <div class="text-center my-3">
