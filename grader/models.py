@@ -182,9 +182,7 @@ class Solution(models.Model):
 
             # run submission against the input test case
             msg = self.execute(t_in.filename)
-            if msg=='success':
-                ac_count += 1
-            else:
+            if msg != 'success':
                 if msg == 'tle':
                     tle_count += 1
                 elif msg == 'sigabrt':
@@ -194,21 +192,23 @@ class Solution(models.Model):
                 # self.save()
                 # return msg
 
-                t_out = ExpectedOutput.objects.get_by_question_test_case(self.question.code, t_in).first()
+            t_out = ExpectedOutput.objects.get_by_question_test_case(self.question.code, t_in).first()
 
-                # download the expected output from AWS
-                get_test_case = fetch_file_cmd.format(
-                    root=settings.MEDIA_ROOT,
-                    filename=t_out.file.name
-                )
-                process = subprocess.check_output(get_test_case, shell=True)
+            # download the expected output from AWS
+            get_test_case = fetch_file_cmd.format(
+                root=settings.MEDIA_ROOT,
+                filename=t_out.file.name
+            )
+            process = subprocess.check_output(get_test_case, shell=True)
 
-                # verify the output with the expected output
-                if not self.verify(t_out.filename):
-                    # self.clear_evaluation_path_contents()
-                    # self.save()
-                    # return 'wa'
-                    wa_count += 1
+            # verify the output with the expected output
+            if not self.verify(t_out.filename):
+                # self.clear_evaluation_path_contents()
+                # self.save()
+                # return 'wa'
+                wa_count += 1
+                continue
+            ac_count += 1
         
         # Set overall result status
         self.score = ac_count * 10

@@ -136,7 +136,7 @@ class RegisterView(AnonymousRequiredMixin, CreateView):
         passkey_validation= self.request.POST['passkey']
         if passkey_validation != passkey:
             # return HttpResponse(passkey)
-            messages.success(self.request, 'Please enter a valid passkey.')
+            messages.error(self.request, 'Please enter a valid passkey.')
             return redirect('register')
         else:
             super(RegisterView, self).form_valid(form)

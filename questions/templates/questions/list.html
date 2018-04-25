@@ -3,19 +3,19 @@
 {% block base_head %}
 <title>Questions</title>
 {% endblock %} {% block content %}
-<div class="jumbotron" style="padding-top: 10px;padding-left: 10px ;padding-bottom: 8px;margin-bottom:10px;margin-top:8px;padding-bottom: 10px ">
+<div class="jumbotron container" style="padding-top: 10px;padding-left: 10px ;padding-bottom: 8px;margin-bottom:10px;margin-top:8px;padding-bottom: 10px ">
 		<div class="row">
-		<div class="col-2 " style="padding-top: 22px">
+		<div class="col-sm-2 " style="padding-top: 22px">
 				<a href="{% url 'home'%}">
             <img src="https://image.ibb.co/cFLKpH/CODE_WARRIOR_N.png" alt="CODE_WARRIOR_N" border="0" style="width: 170px;height: 60px">            <!-- <img src="https://image.ibb.co/eaahPH/hackerearth.png" alt="hackerearth" border="0" /> -->
 		</a>
 			</div>
-		<div id="head" class="col-4 " style="padding-top: 28px">
+		<div id="head" class="col-sm-4 " style="padding-top: 28px">
 			<strong>
 				<h1 id="Code">Code Warrior</h1>
 			</strong>
 		</div>
-		<div class="col-6 ">
+		<div class="col-sm-6 ">
 			<div id="clockdiv">
 				<div>
 					<span id="hour" class="hours"></span>
@@ -32,7 +32,7 @@
 			</div>
 			<script>
 				// Set the date we're counting down to
-				var countDownDate = new Date("Apr 25, 2018 1:26:25").getTime();
+				var countDownDate = new Date("Apr 26, 2018 16:42:25").getTime();
 
 				// Update the count 	<h1>Countdown Clock</h1>down every 1 second
 				var x = setInterval(function () {
@@ -69,7 +69,7 @@
 	</div>
 </div>
 <!-- <div class="row"> -->
-<div class="jumbotron" style="padding-top: 15px;padding-left: 10px ;padding-bottom: 5px;margin-bottom:10px;margin-top:8px; ">
+<div class="jumbotron " style="padding-top: 15px;padding-left: 10px ;padding-bottom: 5px;margin-bottom:10px;margin-top:8px; ">
 	<!-- <h5 style="padding-left: 0" >Problems</h5> -->
 	<p>You have to solve as many problem(s) as you can before the timer ends and based on the accuracy of your submission you will
 		get the scores.</p>
@@ -109,5 +109,7 @@
 
 	</div>
 </div>
+<div style="margin-bottom: 20px">
 
+</div>
 {% endblock %}

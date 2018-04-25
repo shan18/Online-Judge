@@ -65,9 +65,13 @@ def check_solution(request, code, pk):
             if previous_max_submission is not None:
                 score_diff = submission.score - previous_max_submission.score
                 if score_diff > 0:
+                    time_diff_up = (submission.timestamp-previous_max_submission.timestamp).total_seconds()
                     submission.user.increment_score(score_diff)
+                    submission.user.increment_time(time_diff_up)
             else:
+                time_diff=(datetime.now()-start_time).total_seconds()
                 submission.user.increment_score(submission.score)
+                submission.user.increment_time(time_diff)
 
     return render(request, 'grader/result.html', {
         'result': submission.result,
