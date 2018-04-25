@@ -71,6 +71,7 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    total_time = models.IntegerField(default=0)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
@@ -78,7 +79,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     class Meta:
-        ordering = ['-score', 'timestamp']
+        ordering = ['-score', 'total_time']
 
     def __str__(self):
         return self.username
@@ -103,6 +104,11 @@ class User(AbstractBaseUser):
         self.score += int(value)
         self.save()
         return self.score
+
+    def increment_time(self, value):
+        self.total_time += int(value)
+        self.save()
+        return self.total_time
     
     @property
     def get_score(self):
