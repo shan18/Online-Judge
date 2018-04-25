@@ -23,6 +23,7 @@
 						<th class="text-center">Rank</th>
 						<th class="text-center">Username</th>
 						<th class="text-center">Score</th>
+						<th class="text-center">Total Time (seconds)</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -33,6 +34,7 @@
 							<a href="{% url 'profile' object.username %}">{{ object.username }}</a>
 						</td>
 						<td class="text-center">{{ object.score }}</td>
+						<td class="text-center">{{ object.total_time }}</td>
 					</tr>
 					{% else %}
 					<tr>
@@ -41,6 +43,7 @@
 							<a href="{% url 'profile' object.username %}">{{ object.username }}</a>
 						</td>
 						<td class="text-center">{{ object.score }}</td>
+						<td class="text-center">{{ object.total_time }}</td>
 					</tr>
 					{% endif %} {% endfor %}
 				</tbody>
@@ -53,4 +56,4 @@
 	<button type="button" class="btn btn-success">Back To Problems</button>
 </a>
 <div style="margin-bottom: 20px"></div>
-{% endblock %}
+{% endblock %}  
