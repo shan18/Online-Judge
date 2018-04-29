@@ -23,6 +23,7 @@ class Question(models.Model):
     code = models.CharField(unique=True, max_length=10)
     title = models.CharField(unique=True, max_length=120)
     description = models.ImageField(upload_to=upload_question_image_location)
+    time_limit = models.IntegerField(default=1)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = QuestionManager()

@@ -131,7 +131,7 @@ class Solution(models.Model):
             return None
 
         try:
-            process = subprocess.check_output(cmd, shell=True, timeout=1)
+            process = subprocess.check_output(cmd, shell=True, timeout=self.question.time_limit)
         except subprocess.CalledProcessError:
             return 'sigabrt'  # Runtime Error
         except subprocess.TimeoutExpired:
@@ -207,6 +207,7 @@ class Solution(models.Model):
                 # self.save()
                 # return 'wa'
                 wa_count += 1
+                print("i am wrong")
                 continue
             ac_count += 1
         
