@@ -207,7 +207,6 @@ class Solution(models.Model):
                 # self.save()
                 # return 'wa'
                 wa_count += 1
-                print("i am wrong")
                 continue
             ac_count += 1
         
