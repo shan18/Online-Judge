@@ -9,3 +9,4 @@ static_cdn/media_root/submissions/
 .vscode/
 **/__pycache__/
 *.py[cod]
+*.pyc
