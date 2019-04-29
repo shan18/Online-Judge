@@ -148,8 +148,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn', 'static_root')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static_cdn', 'media_root')
 
-from judge.aws.conf import *
-
 
 # SSL/TLS settings for https security
 CORS_REPLACE_HTTPS_REFERER = True

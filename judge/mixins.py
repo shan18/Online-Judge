@@ -18,7 +18,7 @@ class AnonymousRequiredMixin(object):
     """ This mixin ensures that logged in users cannot access the page """
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return redirect(getattr(settings, 'LOGIN_URL_REDIRECT', '/'))
         return super(AnonymousRequiredMixin, self).dispatch(request, *args, **kwargs)
 

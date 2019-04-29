@@ -59,7 +59,7 @@ class TestCaseManager(models.Manager):
 
 
 class TestCase(models.Model):
-    question = models.ForeignKey(Question)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
     file = models.FileField(upload_to=upload_test_case_file_location)
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -104,8 +104,8 @@ class ExpectedOutputManager(models.Manager):
 
 
 class ExpectedOutput(models.Model):
-    question = models.ForeignKey(Question)
-    test_case = models.ForeignKey(TestCase)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    test_case = models.ForeignKey(TestCase, on_delete=models.CASCADE)
     file = models.FileField(upload_to=upload_expected_output_file_location)
     timestamp = models.DateTimeField(auto_now_add=True)
 

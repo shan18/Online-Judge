@@ -58,8 +58,8 @@ class SolutionManager(models.Manager):
 
 
 class Solution(models.Model):
-    question = models.ForeignKey(Question)
-    user = models.ForeignKey(User)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     file = models.FileField(upload_to=upload_solution_file_location)
     language = models.CharField(max_length=10)
     result = models.CharField(max_length=10, choices=RESULT_TYPES, null=True, blank=True)

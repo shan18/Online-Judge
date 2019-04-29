@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.views.generic import ListView, DetailView, FormView, CreateView, View
 from django.views.generic.edit import FormMixin
 from django.utils.safestring import mark_safe
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from .forms import LoginForm, RegisterForm, ReactivateEmailForm
 from .models import EmailActivation
