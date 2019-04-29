@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 from .forms import SolutionForm
 from .models import Solution
 from questions.models import Question
-from grader.util import start_time
+from grader.utils import start_time
 
 User = get_user_model()
 
@@ -20,7 +20,7 @@ User = get_user_model()
 def submit_solution(request, code):
     if request.method == 'POST':
         current_time = datetime.now()
-        future = start_time+timedelta(hours=2)
+        future = start_time + timedelta(hours=200)
         if current_time > future:
             data = User.objects.all()
             username = request.user.username

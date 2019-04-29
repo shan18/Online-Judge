@@ -13,7 +13,7 @@ from django.db.models import Q, Max
 from .models import Question
 from judge.mixins import LoginRequiredMixin
 from grader.models import Solution
-from grader.util import start_time
+from grader.utils import start_time
 
 class QuestionListView(LoginRequiredMixin, ListView):
     template_name = 'questions/list.html'

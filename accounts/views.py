@@ -11,7 +11,7 @@ from .forms import LoginForm, RegisterForm, ReactivateEmailForm
 from .models import EmailActivation
 from judge.mixins import LoginRequiredMixin, AnonymousRequiredMixin, RequestFormAttachMixin, NextUrlMixin
 
-from grader.util import passkey
+from grader.utils import passkey
 
 User = get_user_model()
 

@@ -143,6 +143,8 @@ class Solution(models.Model):
         with open(output) as answer, open(expected_output) as solution:
             answer_lines = answer.readlines()
             solution_lines = solution.readlines()
+            if len(answer_lines) != len(solution_lines):
+                return False
             for i, j in zip(answer_lines, solution_lines):
                 if i.strip() != j.strip():
                     return False
