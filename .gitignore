@@ -1,6 +1,8 @@
-**/credentials.py
 notes/
 static_cdn/static_root/admin/
+static_cdn/media_root/submissions/
+
+*.sqlite3
 
 .env
 .idea/

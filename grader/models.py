@@ -151,12 +151,12 @@ class Solution(models.Model):
             return True
 
     def evaluate(self):
-        fetch_file_cmd = 'wget https:{root}{filename}'
+        fetch_file_cmd = 'cp {media}/{filename} ' + SUBMISSION_EVALUATION_PATH
 
         # download the file from AWS
         os.chdir(SUBMISSION_EVALUATION_PATH)
         get_submission = fetch_file_cmd.format(
-            root=settings.MEDIA_ROOT,
+            media=settings.MEDIA_ROOT,
             filename=self.file.name
         )
         process = subprocess.check_output(get_submission, shell=True)
@@ -177,7 +177,7 @@ class Solution(models.Model):
         for t_in in tc_input_dir_contents:
             # download the test case from AWS
             get_test_case = fetch_file_cmd.format(
-                root=settings.MEDIA_ROOT,
+                media=settings.MEDIA_ROOT,
                 filename=t_in.file.name
             )
             process = subprocess.check_output(get_test_case, shell=True)
@@ -198,7 +198,7 @@ class Solution(models.Model):
 
             # download the expected output from AWS
             get_test_case = fetch_file_cmd.format(
-                root=settings.MEDIA_ROOT,
+                media=settings.MEDIA_ROOT,
                 filename=t_out.file.name
             )
             process = subprocess.check_output(get_test_case, shell=True)
