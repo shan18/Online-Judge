@@ -16,14 +16,14 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.herokuapp.com', '.morphosis.org.in']
+ALLOWED_HOSTS = ['.pythonanywhere.com']
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-BASE_URL = 'code-warrior-morphosis.herokuapp.com'
+BASE_URL = 'nitmz.pythonanywhere.com'
 
 DEFAULT_ACTIVATION_DAYS = 7
 
