@@ -56,7 +56,7 @@ class AccountEmailActivateView(FormMixin, View):
                     return redirect('login')
         context = {'form': self.get_form(), 'key': key}  # get_form() works because of the mixin
         return render(request, 'registration/activation_error.html', context)
-    
+
     def post(self, request, *args, **kwargs):
         # create a form to receive an email
         form = self.get_form()
@@ -64,7 +64,7 @@ class AccountEmailActivateView(FormMixin, View):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
-    
+
     def form_valid(self, form):
         msg = 'Activation link sent. Please check your email.'
         messages.success(self.request, msg)
@@ -131,17 +131,17 @@ class RegisterView(AnonymousRequiredMixin, CreateView):
     form_class = RegisterForm
     template_name = 'accounts/register.html'
     success_url = '/login/'
-    
+
     def form_valid(self, form):
-        passkey_validation= self.request.POST['passkey']
-        if passkey_validation != passkey:
-            # return HttpResponse(passkey)
-            messages.error(self.request, 'Please enter a valid passkey.')
-            return redirect('register')
-        else:
-            super(RegisterView, self).form_valid(form)
-            messages.success(self.request, 'Verification link sent! Please check your email.')
-            return redirect(self.success_url)
+        # passkey_validation= self.request.POST['passkey']
+        # if passkey_validation != passkey:
+        #     # return HttpResponse(passkey)
+        #     messages.error(self.request, 'Please enter a valid passkey.')
+        #     return redirect('register')
+        # else:
+        super(RegisterView, self).form_valid(form)
+        messages.success(self.request, 'Verification link sent! Please check your email.')
+        return redirect(self.success_url)
 
 
 # def register_page(request):

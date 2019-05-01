@@ -143,7 +143,7 @@ class Solution(models.Model):
         with open(output) as answer, open(expected_output) as solution:
             answer_lines = answer.readlines()
             solution_lines = solution.readlines()
-            if len(answer_lines) != len(solution_lines):
+            if len(answer_lines) ==0:
                 return False
             for i, j in zip(answer_lines, solution_lines):
                 if i.strip() != j.strip():
@@ -164,7 +164,7 @@ class Solution(models.Model):
         # compile submission
         if self.compile() != 'success':
             return 'cte'
-        
+
         # Fetch test case model
         tc_input_dir_contents = TestCase.objects.get_by_question(self.question.code)
         name = self.filename
@@ -211,7 +211,7 @@ class Solution(models.Model):
                 wa_count += 1
                 continue
             ac_count += 1
-        
+
         # Set overall result status
         self.score = ac_count * 10
         self.timestamp = timezone.now()
