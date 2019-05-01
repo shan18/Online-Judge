@@ -22,6 +22,10 @@
 		</div>
 		<div class="col-sm-6 ">
 			<div id="clockdiv">
+			    <div>
+					<span id="days" class="days"></span>
+					<div class="smalltext">days</div>
+				</div>
 				<div>
 					<span id="hour" class="hours"></span>
 					<div class="smalltext">Hours</div>
@@ -37,7 +41,7 @@
 			</div>
 			<script>
 				// Set the date we're counting down to
-				var countDownDate = new Date("Apr 28, 2018 10:59:00").getTime();
+				var countDownDate = new Date("May 4, 2019 23:59:59").getTime();
 
 				// Update the count 	<h1>Countdown Clock</h1>down every 1 second
 				var x = setInterval(function () {
@@ -55,14 +59,16 @@
 					var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 					// Output the result in an element with id="demo"
+					document.getElementById("days").innerHTML = days;
 					document.getElementById("hour").innerHTML = hours;
 					document.getElementById("minute").innerHTML = minutes;
 					document.getElementById("second").innerHTML = seconds;
 
 
-					// If the count down is over, write some text 
+					// If the count down is over, write some text
 					if (distance < 0) {
 						clearInterval(x);
+						document.getElementById("days").innerHTML = "0";
 						document.getElementById("hour").innerHTML = "0";
 						document.getElementById("minute").innerHTML = "0";
 						document.getElementById("second").innerHTML = "0";
@@ -79,14 +85,14 @@
     <ol>
 		<li style="text-align: left;">In order to submit a solution, please write your code in your system IDE/Editor, then upload your file .</li>
 	    <li style="text-align: left;">Allowed languages are C, CPP, Python 2 and Python 3 .</li>
-		<li style="text-align: left;">Don't open a new tab , otherwise you will be asked to leave the hall immediately .</li>
-        <li style="text-align: left;">Total duration of the contest is Two Hours .</li>
-        <li style="text-align: left;">Total no of question is five .</li>
+		<li style="text-align: left;">Don't cheat , otherwise  if you are caught in palagrism ,you will be disqualified immediately .</li>
+        <li style="text-align: left;">Total duration of the contest is six days.</li>
+        <li style="text-align: left;">Total no of question is Ten .</li>
         <li style="text-align: left;">Your rank is being calculated based on your score and total time you have taken to achieve the score .</li>
         <li style="text-align: left;">Final decision will be taken by Event Co-ordinator .</li>
     </ol>
 </div>
 <a href="{% url 'question:list' %}">
-    <button type="button" class="btn btn-success" style="margin-bottom: 20px">Paricipate</button>
+    <button type="button" class="btn btn-success" style="margin-bottom: 20px">Participate</button>
 </a>
 {% endblock %}

@@ -18,36 +18,23 @@ a.dropdown-item.active {
 
 body{
 	text-align: center;
-<<<<<<< HEAD
-	background-image: url("https://image.ibb.co/ddx3mx/Website_Design_Background_mast.png");
-  	font-family: sans-serif;
-=======
 	/* background-image: url("https://image.ibb.co/ddx3mx/Website_Design_Background_mast.png"); */
 	/* background: rgba(19, 35, 47, 0.9); */
-	background: url("https://giphy.com/gifs/MdLKDUw4MOpM3Ejux9/html5");
-  font-family: sans-serif;
->>>>>>> 487293275439f11242b0fa685d67d81fa6fc1cd0
+	background: url("https://s3.gifyu.com/images/ezgif.com-video-to-gifb6c69851d1fda6b9.gif");
+    font-family: sans-serif;
 	font-weight: 100;
 	background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-<<<<<<< HEAD
 }
-=======
-} 
->>>>>>> 487293275439f11242b0fa685d67d81fa6fc1cd0
 
 h1{
   color: rgb(43, 59, 51);
   font-weight: 100;
   font-size: 40px;
   /* margin: 40px 0px 20px;*/
-<<<<<<< HEAD
 }
-=======
-} 
->>>>>>> 487293275439f11242b0fa685d67d81fa6fc1cd0
 
 #clockdiv{
 	font-family: sans-serif;
