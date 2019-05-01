@@ -23,9 +23,9 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-BASE_URL = 'nitmz.pythonanywhere.com'
+BASE_URL = 'codewarrior.morphosis.org.in'
 
-DEFAULT_ACTIVATION_DAYS = 7
+DEFAULT_ACTIVATION_DAYS = 1
 
 # This allows sendgrid to send emails to the specified id whenever server error occurs.
 DEFAULT_FROM_EMAIL = 'Morphosis Code Warrior <morphosis@nitmz.ac.in>'
