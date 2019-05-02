@@ -140,7 +140,7 @@ class Solution(models.Model):
 
     def verify(self, expected_output):
         output = self.filename + '.txt'
-        with open(output) as answer, open(expected_output) as solution:
+        with open(output, 'rb') as answer, open(expected_output,'rb') as solution:
             answer_lines = answer.readlines()
             solution_lines = solution.readlines()
             if len(answer_lines) ==0:

@@ -55,7 +55,7 @@ def check_solution(request, code, pk):
 
         if submission.result == 'ac' or submission.result == 'pc':
             previous_max_submission = qs.exclude(pk=submission.id).first()
-            if previous_max_submission is not None:
+            if previous_max_submission is not None and previous_max_submission.score>0:
                 score_diff = submission.score - previous_max_submission.score
                 if score_diff > 0:
                     time_diff_up = (submission.timestamp-previous_max_submission.timestamp).total_seconds()
