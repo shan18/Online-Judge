@@ -51,7 +51,7 @@ def check_solution(request, code, pk):
 
     if submission.result is None:
         # run submission
-        submission.evaluate()
+        submission.evaluate(request.user.username)
 
         if submission.result == 'ac' or submission.result == 'pc':
             previous_max_submission = qs.exclude(pk=submission.id).first()

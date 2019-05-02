@@ -21,7 +21,7 @@ RESULT_TYPES = (
     ('pc', 'Partially Correct')  # Partially Correct
 )
 
-SUBMISSION_EVALUATION_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'submission_evaluation')
+SUBMISSION_EVALUATION_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'submission_evaluation')
 
 
 def upload_solution_file_location(instance, filename):
@@ -83,17 +83,8 @@ class Solution(models.Model):
     def get_absolute_url(self):
         return self.file.url
 
-    def clear_evaluation_path_contents(self):
-        # When files are stored in local server
-        #
-        # name = self.filename
-        # if self.language == 'java':
-        #     name += '.class'
-        # if os.path.exists(name):
-        #     os.remove(name)
-
-        # When files are stored in non-local server
-        os.chdir(SUBMISSION_EVALUATION_PATH)
+    def clear_evaluation_path_contents(self, evaluation_path):
+        os.chdir(evaluation_path)
         for file in os.listdir(os.getcwd()):
             if file != 'version_control.txt':
                 os.remove(file)
@@ -150,11 +141,16 @@ class Solution(models.Model):
                     return False
             return True
 
-    def evaluate(self):
-        fetch_file_cmd = 'cp {media}/{filename} ' + SUBMISSION_EVALUATION_PATH
+    def evaluate(self, username):
+        # create user directory
+        evaluation_path = os.path.join(SUBMISSION_EVALUATION_DIR, username)
+        if not os.path.exists(evaluation_path):
+            os.mkdir(evaluation_path)
+        
+        os.chdir(evaluation_path)
+        fetch_file_cmd = 'cp {media}/{filename} ' + evaluation_path
 
-        # download the file from AWS
-        os.chdir(SUBMISSION_EVALUATION_PATH)
+        # copy test cases to the required directory
         get_submission = fetch_file_cmd.format(
             media=settings.MEDIA_ROOT,
             filename=self.file.name
@@ -205,7 +201,7 @@ class Solution(models.Model):
 
             # verify the output with the expected output
             if not self.verify(t_out.filename):
-                # self.clear_evaluation_path_contents()
+                # self.clear_evaluation_path_contents(evaluation_path)
                 # self.save()
                 # return 'wa'
                 wa_count += 1
@@ -226,7 +222,7 @@ class Solution(models.Model):
         else:
             self.result = 'pc'
 
-        self.clear_evaluation_path_contents()
+        self.clear_evaluation_path_contents(evaluation_path)
         self.save()
 
 
