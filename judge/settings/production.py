@@ -31,6 +31,7 @@ DEFAULT_ACTIVATION_DAYS = 1
 DEFAULT_FROM_EMAIL = 'Morphosis Code Warrior <morphosis@nitmz.ac.in>'
 MANAGERS = (
     ('Morphosis NITMZ', 'morphosis@nitmz.ac.in'),
+    ('Ranjeet Kumar', 'ranjee970@gmail.com'),
 )
 ADMINS = MANAGERS
 

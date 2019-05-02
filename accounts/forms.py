@@ -155,10 +155,10 @@ class RegisterForm(forms.ModelForm):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if not re.match(r'^[\w]+$', username):
+        if not re.match(r'^[a-zA-Z0-9]+$', username):
             raise forms.ValidationError('username can contain only alphabets and numbers')
         return username
-    
+
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super(RegisterForm, self).save(commit=False)
