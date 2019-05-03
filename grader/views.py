@@ -20,7 +20,7 @@ User = get_user_model()
 def submit_solution(request, code):
     if request.method == 'POST':
         current_time = datetime.now()
-        future = start_time + timedelta(hours=200)
+        future = start_time + timedelta(hours=96)
         if current_time > future:
             data = User.objects.all()
             username = request.user.username
