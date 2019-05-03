@@ -79,7 +79,11 @@
 <div class="jumbotron" style="padding-top: 15px;padding-left: 10px ;padding-bottom: 5px;margin-bottom:10px;margin-top:8px;">
     <div class="row">
         <div class="col-sm-4">
+            {% if error %}
+              <p style="color:red;">{{ error }}</p>
+            {% else %}
             <a class="btn btn-success" href="{{ object.get_submit_url }}">Submit Solution</a>
+            {% endif %}
         </div>
         <div class="col-sm-4">
             <h3 style="color: rgb(59, 99, 99)" class="text-center">{{ object.code }}: {{ object.title }}</h3>
@@ -93,8 +97,11 @@
 <div>
     <img src="{{ object.description.url }}" style="max-width:100%;height:auto;">
     <div class="jumbotron" style="padding-top: 10px;padding-left: 10px ;padding-bottom: 8px;margin-bottom:10px;margin-top:15px;padding-bottom: 20px ">
-        <a class="btn btn-success" href="{{ object.get_submit_url }}">Submit Solution</a>
-    </div>
+            {% if error %}
+              <p style="color:red;">{{ error }}</p>
+            {% else %}
+            <a class="btn btn-success" href="{{ object.get_submit_url }}">Submit Solution</a>
+            {% endif %}    </div>
     <div style="margin-bottom: 10px"></div>
 </div>
 
