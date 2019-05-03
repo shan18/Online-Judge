@@ -82,12 +82,17 @@ class Solution(models.Model):
 
     def get_absolute_url(self):
         return self.file.url
-
-    def clear_evaluation_path_contents(self, evaluation_path):
-        os.chdir(evaluation_path)
-        for file in os.listdir(os.getcwd()):
-            if file != 'version_control.txt':
-                os.remove(file)
+    
+    def validate(self):
+        """ Check if the user has written any malicious code """
+        with open(os.path.join(settings.MEDIA_ROOT, self.file.name)) as file:
+            lines = file.readlines()
+            validators = ['os.', 'from os', 'io.', 'from io', 'open(', 'system(']
+            for line in lines:
+                for validator in validators:
+                    if validator in line:
+                        return False
+        return True
 
     def compile(self):
         name = self.filename
@@ -141,72 +146,82 @@ class Solution(models.Model):
                     return False
             return True
 
-    def evaluate(self, username):
-        # create user directory
-        evaluation_path = os.path.join(SUBMISSION_EVALUATION_DIR, username)
-        if not os.path.exists(evaluation_path):
-            os.mkdir(evaluation_path)
-        
+    def clear_evaluation_path_contents(self, evaluation_path):
         os.chdir(evaluation_path)
-        fetch_file_cmd = 'cp {media}/{filename} ' + evaluation_path
+        for file in os.listdir(os.getcwd()):
+            if file != 'version_control.txt':
+                os.remove(file)
 
-        # copy test cases to the required directory
-        get_submission = fetch_file_cmd.format(
-            media=settings.MEDIA_ROOT,
-            filename=self.file.name
-        )
-        process = subprocess.check_output(get_submission, shell=True)
-
-        # compile submission
-        if self.compile() != 'success':
-            return 'cte'
-
-        # Fetch test case model
-        tc_input_dir_contents = TestCase.objects.get_by_question(self.question.code)
-        name = self.filename
-
-        # Execute submissions against input test cases
+    def evaluate(self, username):
         ac_count = 0
         tle_count = 0
         sigabrt_count = 0
         wa_count = 0
-        for t_in in tc_input_dir_contents:
-            # download the test case from AWS
-            get_test_case = fetch_file_cmd.format(
+
+        if self.validate():
+            # create user directory
+            evaluation_path = os.path.join(SUBMISSION_EVALUATION_DIR, username)
+            if not os.path.exists(evaluation_path):
+                os.mkdir(evaluation_path)
+            
+            os.chdir(evaluation_path)
+            fetch_file_cmd = 'cp {media}/{filename} ' + evaluation_path
+
+            # copy test cases to the required directory
+            get_submission = fetch_file_cmd.format(
                 media=settings.MEDIA_ROOT,
-                filename=t_in.file.name
+                filename=self.file.name
             )
-            process = subprocess.check_output(get_test_case, shell=True)
+            process = subprocess.check_output(get_submission, shell=True)
 
-            # run submission against the input test case
-            msg = self.execute(t_in.filename)
-            if msg != 'success':
-                if msg == 'tle':
-                    tle_count += 1
-                elif msg == 'sigabrt':
-                    sigabrt_count += 1
-                continue
-                # self.clear_evaluation_path_contents()
-                # self.save()
-                # return msg
+            # compile submission
+            if self.compile() != 'success':
+                return 'cte'
 
-            t_out = ExpectedOutput.objects.get_by_question_test_case(self.question.code, t_in).first()
+            # Fetch test case model
+            tc_input_dir_contents = TestCase.objects.get_by_question(self.question.code)
+            name = self.filename
 
-            # download the expected output from AWS
-            get_test_case = fetch_file_cmd.format(
-                media=settings.MEDIA_ROOT,
-                filename=t_out.file.name
-            )
-            process = subprocess.check_output(get_test_case, shell=True)
+            # Execute submissions against input test cases
+            for t_in in tc_input_dir_contents:
+                # download the test case from AWS
+                get_test_case = fetch_file_cmd.format(
+                    media=settings.MEDIA_ROOT,
+                    filename=t_in.file.name
+                )
+                process = subprocess.check_output(get_test_case, shell=True)
 
-            # verify the output with the expected output
-            if not self.verify(t_out.filename):
-                # self.clear_evaluation_path_contents(evaluation_path)
-                # self.save()
-                # return 'wa'
-                wa_count += 1
-                continue
-            ac_count += 1
+                # run submission against the input test case
+                msg = self.execute(t_in.filename)
+                if msg != 'success':
+                    if msg == 'tle':
+                        tle_count += 1
+                    elif msg == 'sigabrt':
+                        sigabrt_count += 1
+                    continue
+                    # self.clear_evaluation_path_contents()
+                    # self.save()
+                    # return msg
+
+                t_out = ExpectedOutput.objects.get_by_question_test_case(self.question.code, t_in).first()
+
+                # download the expected output from AWS
+                get_test_case = fetch_file_cmd.format(
+                    media=settings.MEDIA_ROOT,
+                    filename=t_out.file.name
+                )
+                process = subprocess.check_output(get_test_case, shell=True)
+
+                # verify the output with the expected output
+                if not self.verify(t_out.filename):
+                    # self.clear_evaluation_path_contents(evaluation_path)
+                    # self.save()
+                    # return 'wa'
+                    wa_count += 1
+                    continue
+                ac_count += 1
+            
+            self.clear_evaluation_path_contents(evaluation_path)
 
         # Set overall result status
         self.score = ac_count * 10
@@ -222,7 +237,6 @@ class Solution(models.Model):
         else:
             self.result = 'pc'
 
-        self.clear_evaluation_path_contents(evaluation_path)
         self.save()
 
 
