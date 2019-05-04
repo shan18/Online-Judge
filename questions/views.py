@@ -50,6 +50,16 @@ class QuestionListView(LoginRequiredMixin, ListView):
 class QuestionDetailView(LoginRequiredMixin, DetailView):
     template_name = 'questions/detail.html'
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get the context
+        context = super(QuestionDetailView, self).get_context_data(**kwargs)
+        if self.request.user and not self.request.user.is_admin:
+            current_time = datetime.now()
+            future = start_time + timedelta(hours=96)
+            if current_time > future:
+                context['error'] = 'Contest has ended.'
+        return context
+
     def get_object(self, *args, **kwargs):
         request = self.request
         code = self.kwargs.get('code')

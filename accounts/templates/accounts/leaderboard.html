@@ -33,27 +33,31 @@
           </tr>
         </thead>
         <tbody>
-          {% for object in object_list %} {% if object.username == username%}
-          <tr style="background-color:rgb(224, 129, 129)">
-            <td class="text-center">{{ forloop.counter }}</td>
-            <td class="text-center">
-              {{ object.username }}
-              <!--<a href="{% url 'profile' object.username %}">{{ object.username }}</a>-->
-            </td>
-            <td class="text-center">{{ object.score }}</td>
-            <td class="text-center">{{ object.total_time }}</td>
-          </tr>
-          {% else %}
-          <tr>
-            <td class="text-center">{{ forloop.counter }}</td>
-            <td class="text-center">
-              {{ object.username }}
-              <!--<a href="{% url 'profile' object.username %}">{{ object.username }}</a>-->
-            </td>
-            <td class="text-center">{{ object.score }}</td>
-            <td class="text-center">{{ object.total_time }}</td>
-          </tr>
-          {% endif %} {% endfor %}
+          {% for object in object_list %}
+            {% if not object.is_admin %}
+              {% if object.username == username %}
+              <tr style="background-color:rgb(224, 129, 129)">
+                <td class="text-center">{{ forloop.counter }}</td>
+                <td class="text-center">
+                  {{ object.username }}
+                  <!--<a href="{% url 'profile' object.username %}">{{ object.username }}</a>-->
+                </td>
+                <td class="text-center">{{ object.score }}</td>
+                <td class="text-center">{{ object.total_time }}</td>
+              </tr>
+              {% else %}
+              <tr>
+                <td class="text-center">{{ forloop.counter }}</td>
+                <td class="text-center">
+                  {{ object.username }}
+                  <!--<a href="{% url 'profile' object.username %}">{{ object.username }}</a>-->
+                </td>
+                <td class="text-center">{{ object.score }}</td>
+                <td class="text-center">{{ object.total_time }}</td>
+              </tr>
+              {% endif %}
+             {% endif %}
+          {% endfor %}
         </tbody>
       </table>
     </div>
