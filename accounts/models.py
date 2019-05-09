@@ -25,7 +25,7 @@ class UserManager(BaseUserManager):
             raise ValueError('Users must have an email.')
         if not password:
             raise ValueError('Users must have a password.')
-        
+
         user_obj = self.model(
             username=username,
             email=self.normalize_email(email),
@@ -38,7 +38,7 @@ class UserManager(BaseUserManager):
         user_obj.score = 0
         user_obj.save(using=self._db)
         return user_obj
-    
+
     def create_staffuser(self, username, email, full_name=None, password=None):
         user = self.create_user(
             username,
@@ -48,7 +48,7 @@ class UserManager(BaseUserManager):
             is_staff=True
         )
         return user
-    
+
     def create_superuser(self, username, email, full_name=None, password=None):
         user = self.create_user(
             username,
@@ -87,15 +87,15 @@ class User(AbstractBaseUser):
     def get_full_name(self):
         if self.full_name:
             return self.full_name
-        return self.email
+        return self.username
 
     def get_short_name(self):
         return self.username
-    
+
     def has_perm(self, perm, object=None):
         """ Does the user have a specific permission? """
         return True
-    
+
     def has_module_perms(self, app_label):
         """ Does the user have permissions to view the app 'app_label'? """
         return True
@@ -109,15 +109,15 @@ class User(AbstractBaseUser):
         self.total_time += int(value)
         self.save()
         return self.total_time
-    
+
     @property
     def get_score(self):
         return self.score
-    
+
     @property
     def is_staff(self):
         return self.staff
-    
+
     @property
     def is_admin(self):
         return self.admin
@@ -141,10 +141,10 @@ class EmailActivationManager(models.Manager):
 
     def get_queryset(self):
         return EmailActivationQuerySet(self.model, using=self._db)
-    
+
     def confirmable(self):
         return self.get_queryset().confirmable()
-    
+
     def email_exists(self, email):
         """
         EmailActivation is created when the user is created. When only EmailActivation is deleted, User object
@@ -170,13 +170,13 @@ class EmailActivation(models.Model):
 
     def __str__(self):
         return self.email
-    
+
     def can_activate(self):
         qs = EmailActivation.objects.filter(pk=self.pk).confirmable()
         if qs.exists():
             return True
         return False
-    
+
     def activate(self):
         if self.can_activate():
             user = self.user
@@ -186,7 +186,7 @@ class EmailActivation(models.Model):
             self.save()
             return True
         return False
-    
+
     def send_activation(self):
         if not self.activated and not self.forced_expire:
             if self.key:

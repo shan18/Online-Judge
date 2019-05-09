@@ -66,6 +66,8 @@ def check_solution(request, code, pk):
                 submission.user.increment_score(submission.score)
                 submission.user.increment_time(time_diff)
 
+        # print(submission.result)
+
     return render(request, 'grader/result.html', {
         'result': submission.result,
         'score': submission.score

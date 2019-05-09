@@ -72,8 +72,7 @@ class Solution(models.Model):
         ordering = ['-score', 'timestamp']
 
     def __str__(self):
-        return self.user.username + ' - ' + self.question.code
-
+        return self.user.username + ' - ' + self.question.code + ' - ' + str(self.score) + str(self.timestamp)
     @property
     def filename(self):
         """ Returns the name of the uploaded file without the extension """
@@ -82,7 +81,7 @@ class Solution(models.Model):
 
     def get_absolute_url(self):
         return self.file.url
-    
+
     def validate(self):
         """ Check if the user has written any malicious code """
         with open(os.path.join(settings.MEDIA_ROOT, self.file.name)) as file:
@@ -163,7 +162,7 @@ class Solution(models.Model):
             evaluation_path = os.path.join(SUBMISSION_EVALUATION_DIR, username)
             if not os.path.exists(evaluation_path):
                 os.mkdir(evaluation_path)
-            
+
             os.chdir(evaluation_path)
             fetch_file_cmd = 'cp {media}/{filename} ' + evaluation_path
 
@@ -176,6 +175,8 @@ class Solution(models.Model):
 
             # compile submission
             if self.compile() != 'success':
+                self.result = 'cte'
+                self.save()
                 return 'cte'
 
             # Fetch test case model
@@ -220,8 +221,8 @@ class Solution(models.Model):
                     wa_count += 1
                     continue
                 ac_count += 1
-            
-            self.clear_evaluation_path_contents(evaluation_path)
+
+            # self.clear_evaluation_path_contents(evaluation_path)
 
         # Set overall result status
         self.score = ac_count * 10

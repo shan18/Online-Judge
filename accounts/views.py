@@ -28,8 +28,9 @@ class ProfileView(LoginRequiredMixin, DetailView):
 
 
 class LeaderBoardView(ListView):
-    queryset = User.objects.filter(admin=False)
+    queryset = User.objects.filter(admin=False, is_active=True)
     template_name = 'accounts/leaderboard.html'
+
 
 class AccountEmailActivateView(FormMixin, View):
     success_url = '/login/'

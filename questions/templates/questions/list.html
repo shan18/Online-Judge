@@ -36,7 +36,7 @@
 			</div>
 			<script>
 				// Set the date we're counting down to
-				var countDownDate = new Date("May 5, 2019 9:59:59").getTime();
+				var countDownDate = new Date("May 9, 2019 9:59:59").getTime();
 
 				// Update the count 	<h1>Countdown Clock</h1>down every 1 second
 				var x = setInterval(function () {
@@ -81,6 +81,11 @@
 		get the scores.</p>
 </div>
 <!-- </div> -->
+
+<!--<marquee width="40%" direction="left" height="30%" style="color:white;">-->
+<!--    There was some bug in question no 4. You can submit again to test your code.-->
+<!--</marquee>-->
+
 <div class="row">
 	<div class="col-12 my-3">
 
@@ -90,6 +95,7 @@
 					<th class="text-center">#</th>
 					<th class="text-center">Question</th>
 					<th class="text-center">Maximum Marks</th>
+					<th class="text-center">Time Limit</th>
 					<th class="text-center">Marks Obtained</th>
 				</tr>
 			</thead>
@@ -102,6 +108,9 @@
 					</td>
 					<td class="text-center">
 						<strong>100</strong>
+					</td>
+					<td class="text-center">
+						<strong>1 second</strong>
 					</td>
 					<td class="text-center">
 						<strong>{{object.marks_obtained}}</strong>
