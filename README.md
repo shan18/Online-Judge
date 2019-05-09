@@ -17,8 +17,6 @@ An online judge that supports the following languages:
 
 ### Third Party Services Used
 
-- **Amazon Web Services (AWS)**: Stores all static and media files.
-- **Heroku**: Used to deploy the project in production environment.
 - **sendgrid**: Used to send transactional emails like email-id verification.
 
 
@@ -37,16 +35,12 @@ An online judge that supports the following languages:
 	- Add your sendgrid username and password to `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` in **credentials.py** respectively.
 	- Change the email and name in `DEFAULT_FROM_EMAIL` and `MANAGERS` in all *settings files* with your name and email.
 
-4. **Amazon Web Services (AWS) setup**:  
-	Create and setup the IAM User and bucket in AWS, then add all the required values to **credentials.py**
-
-5. **Heroku setup**:  
-	Follow this guide to setup Heroku in the project: [Heroku Setup](notes/heroku_setup.md).
-
 6. Run the following commands  
 `python manage.py makemigrations`  
 `python manage.py migrate`  
 `python manage.py collectstatic`
 
-7. Now load the **questions**, **test cases** and **expected outputs** into the database  
+7. Now load the **questions**, **test cases**, **expected outputs** and user submission into the database  
 `python manage.py loaddata questions/fixtures/questions.json`
+
+8. While logging in, you will be required to enter a passkey. The passkey can be found in **grader/utils.py**.
