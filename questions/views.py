@@ -55,7 +55,7 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
         context = super(QuestionDetailView, self).get_context_data(**kwargs)
         if self.request.user and not self.request.user.is_admin:
             current_time = datetime.now()
-            future = start_time + timedelta(hours=96)
+            future = start_time + timedelta(hours=1000000000)
             if current_time > future:
                 context['error'] = 'Contest has ended.'
         return context
