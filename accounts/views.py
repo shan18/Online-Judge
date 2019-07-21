@@ -11,8 +11,6 @@ from .forms import LoginForm, RegisterForm, ReactivateEmailForm
 from .models import EmailActivation
 from judge.mixins import LoginRequiredMixin, AnonymousRequiredMixin, RequestFormAttachMixin, NextUrlMixin
 
-from grader.utils import passkey
-
 User = get_user_model()
 
 
@@ -101,32 +99,6 @@ class LoginView(AnonymousRequiredMixin, RequestFormAttachMixin, NextUrlMixin, Fo
         next_path = self.get_next_url()
         return redirect(next_path)
 
-    # This method was removed because it was later used from within mixins
-    # def get_form_kwargs(self):
-    #     kwargs = super(LoginView, self).get_form_kwargs()
-    #     kwargs['request'] = self.request
-    #     return kwargs
-
-
-# def login_page(request):
-#     if request.user.is_authenticated:
-#         return redirect('home')
-
-#     form = LoginForm(request.POST or None)
-#     context = {
-#         'form': form
-#     }
-#     if form.is_valid():
-#         username = form.cleaned_data.get('username')
-#         password = form.cleaned_data.get('password')
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#             return redirect('home')
-#         else:
-#             raise Http404
-#     return render(request, 'accounts/login.html', context)
-
 
 class RegisterView(AnonymousRequiredMixin, CreateView):
     form_class = RegisterForm
@@ -134,26 +106,6 @@ class RegisterView(AnonymousRequiredMixin, CreateView):
     success_url = '/login/'
 
     def form_valid(self, form):
-        # passkey_validation= self.request.POST['passkey']
-        # if passkey_validation != passkey:
-        #     # return HttpResponse(passkey)
-        #     messages.error(self.request, 'Please enter a valid passkey.')
-        #     return redirect('register')
-        # else:
         super(RegisterView, self).form_valid(form)
         messages.success(self.request, 'Verification link sent! Please check your email.')
         return redirect(self.success_url)
-
-
-# def register_page(request):
-#     if request.user.is_authenticated:
-#         return redirect('home')
-
-#     form = RegisterForm(request.POST or None)
-#     context = {
-#         'form': form
-#     }
-#     if form.is_valid():
-#         form.save()
-#         return redirect('login')
-#     return render(request, 'accounts/register.html', context)

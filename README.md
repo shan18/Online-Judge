@@ -42,5 +42,3 @@ An online judge that supports the following languages:
 
 7. Now load the **questions**, **test cases**, **expected outputs** and user submission into the database  
 `python manage.py loaddata questions/fixtures/questions.json`
-
-8. While logging in, you will be required to enter a passkey. The passkey can be found in **grader/utils.py**.

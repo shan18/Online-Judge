@@ -8,8 +8,6 @@ from django.utils.safestring import mark_safe
 
 from .models import EmailActivation
 
-from grader.utils import passkey
-
 User = get_user_model()
 
 
@@ -71,10 +69,6 @@ class LoginForm(forms.Form):
         attrs={'class': 'form-control my-2', 'placeholder': 'Password'}
     ))
 
-    passkey =  forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control my-2', 'placeholder': 'Passkey'}
-    ))
-
     def __init__(self, request, *args, **kwargs):
         self.request = request
         super(LoginForm, self).__init__(*args, **kwargs)
@@ -87,9 +81,6 @@ class LoginForm(forms.Form):
         request = self.request
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
-        passkey1 =   self.cleaned_data.get('passkey')
-
-        # print(passkey1)
 
         response = {
             'success': False,
@@ -124,10 +115,6 @@ class LoginForm(forms.Form):
         if user is None:
             response['message'] = 'The username or the password is incorrect! Please try again.'
             # raise forms.ValidationError('Invalid credentials')
-            return response
-
-        if passkey1 != passkey:
-            response['message'] = "Invalid passkey"
             return response
 
         login(request, user)
